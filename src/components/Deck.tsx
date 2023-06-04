@@ -3,7 +3,6 @@ import React, {useEffect, useState} from "react";
 import {RoomInterface} from "../interfaces/RoomInterface";
 // @ts-ignore
 import coffee from "../images/coffee.png";
-import useWebSocket from 'react-use-websocket';
 import {UserInterface} from "../interfaces/UserInterface";
 import {Environment} from "../utils/Environment";
 
