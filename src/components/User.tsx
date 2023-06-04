@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import useUser from "../zus/UserZus";
 import {v4 as uuidv4} from "uuid";
 import useWebSocket from "react-use-websocket";
-import {Enviroment} from "../utils/Enviroment";
+import {Environment} from "../utils/Environment";
 import useRoom from "../zus/RoomZus";
 import {AllServices} from "../services/allServices";
 

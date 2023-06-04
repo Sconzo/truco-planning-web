@@ -5,7 +5,7 @@ import {Button} from "@material-ui/core";
 import useUser from "../zus/UserZus";
 import useRoom from "../zus/RoomZus";
 import React, {useState} from "react";
-import {Enviroment} from "../utils/Enviroment";
+import {Environment} from "../utils/Environment";
 
 const useStyles = makeStyles((theme) => ({
     table: {

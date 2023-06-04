@@ -7,7 +7,7 @@ import useRoom from "../zus/RoomZus";
 import useUser from "../zus/UserZus";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingIcon from '@mui/icons-material/Pending';
-import {Enviroment} from "../utils/Enviroment";
+import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
 const useStyles = makeStyles((theme) => ({
     root: {

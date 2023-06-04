@@ -5,7 +5,7 @@ import {RoomInterface} from "../interfaces/RoomInterface";
 import coffee from "../images/coffee.png";
 import useWebSocket from 'react-use-websocket';
 import {UserInterface} from "../interfaces/UserInterface";
-import {Enviroment} from "../utils/Enviroment";
+import {Environment} from "../utils/Environment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,7 +53,7 @@ const Deck = (props: DeckProps) => {
 
     const [userList, setUserList] = React.useState([]);
 
-    const {sendMessage} = useWebSocket(Enviroment.SERVER_URL);
+    const {sendMessage} = useWebSocket(Environment.SERVER_URL);
     function tellServer(value: string) {
         const a = userList;
         const message = {
