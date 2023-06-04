@@ -80,13 +80,11 @@ const User = () => {
     };
 
     return (
-        <div>
             <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
                 minHeight="100vh"
-
             >
 
                 <FormControl >
@@ -112,7 +110,6 @@ const User = () => {
                 </FormControl>
 
             </Box>
-        </div>
     );
 };
 

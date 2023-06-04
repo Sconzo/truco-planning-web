@@ -27,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
         width: "20px",
         height: "20px",
     },
+    root: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height:'100vh',
+    },
 
 }));
 
@@ -101,12 +107,8 @@ const CreateRoomForm = () => {
 
     const classes = useStyles();
     return (
-        <div>
             <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="100vh"
+                className={classes.root}
             >
 
                 <FormControl >
@@ -137,7 +139,6 @@ const CreateRoomForm = () => {
                 </FormControl>
 
             </Box>
-        </div>
     );
 };
 
