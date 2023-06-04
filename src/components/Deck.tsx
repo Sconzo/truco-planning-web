@@ -52,27 +52,13 @@ const Deck = (props: DeckProps) => {
 
     const [userList, setUserList] = React.useState([]);
 
-    const {sendMessage} = useWebSocket(Environment.SERVER_URL);
-    function tellServer(value: string) {
-        const a = userList;
-        const message = {
-            userId: props.user.userId,
-            vote: value,
-            type: 'voted',
-        };
-        sendMessage(JSON.stringify(message));
-    }
-
     const selectCard = (cardIndex: number) => {
         if (selectedCardIndex === cardIndex) {
             setSelectedCardIndex(null);
-            tellServer("");
         } else {
             setSelectedCardIndex(cardIndex);
             if (cardIndex === -1) {
-                tellServer("coffee")
             } else {
-                tellServer(props.room.roomSystem.values[cardIndex]);
             }
         }
     };

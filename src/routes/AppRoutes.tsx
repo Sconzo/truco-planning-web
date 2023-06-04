@@ -2,7 +2,7 @@ import {Routes, Route, Navigate} from "react-router-dom";
 import CreateRoomForm from "../components/CreateRoomForm";
 import PokerPage from "../components/PokerPage";
 import User from "../components/User";
-
+import React from "react";
 export const AppRoutes = () => {
     return (
 

@@ -47,7 +47,6 @@ const User = () => {
     const addUser = useRoom(((state) => state.addUser));
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
-    const userId = uuidv4();
 
     const routeChange = () => {
         navigate("/poker");
@@ -56,7 +55,7 @@ const User = () => {
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value.trim(),
-            userId: userId,
+            userId: "1",
         });
     };
 
