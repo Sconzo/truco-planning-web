@@ -81,6 +81,7 @@ const CreateRoomForm = () => {
     const changeRoom = useRoom((state) => state.changeRoom);
     const handleSubmit = (e: any) => {
         e.preventDefault();
+        console.log(formData)
         changeRoom(formData);
         routeChange();
     };

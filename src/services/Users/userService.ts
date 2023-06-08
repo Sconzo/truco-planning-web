@@ -1,5 +1,5 @@
-import axios from 'axios'
 import Pusher from 'pusher-js';
+import {Api} from '../axios-config'
 
 const pusherKey = "5918ae5c8a1c68cce96d"
 const pusherCluster = "sa1"
@@ -19,7 +19,7 @@ const pusher = new Pusher(pusherKey, {
 
 async function addParticipant(name : string) {
     try {
-        const response = await axios.post('/participant', {
+        const response = await Api.post('/participant', {
             name,
             socketId: pusher.connection.socket_id,
         });
@@ -33,7 +33,7 @@ async function addParticipant(name : string) {
     }
 }
 
-export const AllServices = {
+export const UserService = {
     addParticipant
 }
 
