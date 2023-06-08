@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import useUser from "../zus/UserZus";
 import {Environment} from "../utils/Environment";
 import useRoom from "../zus/RoomZus";
-import {AllServices} from "../services/allServices";
+import {UserService} from "../services/Users/userService";
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -68,10 +68,11 @@ const User = () => {
     };
 
     async function addParticipant(username : string) {
-        formData.userId = await AllServices.addParticipant(formData.userName);
+        formData.userId = await UserService.addParticipant(formData.userName);
     }
 
     const handleSubmit = (e: any) => {
+        console.log(formData)
         e.preventDefault();
         routeChange();
         setUser(formData);
