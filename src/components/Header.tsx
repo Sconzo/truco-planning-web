@@ -4,11 +4,14 @@ import React from "react";
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 0,
+        padding : 20,
         height: 'auto',
     },
     playerName: {
         color:"black",
-        paddingLeft:"30px"
+        paddingLeft:"30px",
+        display:"flex",
+        alignItems:"center"
     },
     roomName: {
         color:"black",
