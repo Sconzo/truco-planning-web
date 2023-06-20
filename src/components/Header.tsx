@@ -1,5 +1,7 @@
 import { Grid, makeStyles, Button } from '@material-ui/core';
 import React from "react";
+import useRoom from "../zus/RoomZus";
+import useUser from "../zus/UserZus";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,8 +36,21 @@ interface HeaderProps {
     userName: string;
     roomName: string;
 }
+
 const Header = ({ userName, roomName }:HeaderProps) => {
     const classes = useStyles();
+
+    const room = useRoom(((state) => state.room));
+    const user = useUser(((state) => state.user));
+
+
+    const handleClick = (e:any) =>{
+        console.log("User -> ")
+        console.log(user)
+        console.log("Room -> ")
+        console.log(room)
+    }
+
     return (
         <Grid container  className={classes.root}>
             <Grid item xs={4} className={classes.playerName}>
@@ -45,7 +60,7 @@ const Header = ({ userName, roomName }:HeaderProps) => {
                 {<h1>{roomName}</h1>}
             </Grid>
             <Grid item xs={4} className={classes.invite}>
-                <Button variant="contained" color="primary" >INVITE</Button>
+                <Button variant="contained" color="primary" onClick={($event) => handleClick($event)} >INVITE</Button>
             </Grid>
         </Grid>
 );

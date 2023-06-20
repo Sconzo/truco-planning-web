@@ -17,14 +17,15 @@ const pusher = new Pusher(pusherKey, {
 
 
 
-async function addParticipant(name : string) {
+async function addParticipant(name : string, sessionId : string, spectator : boolean) {
     try {
-        const response = await Api.post('/participant', {
+        const response = await Api.post('/user', {
             name,
-            socketId: pusher.connection.socket_id,
+            sessionId,
+            spectator,
         });
 
-        const participantId = response.data.participantId;
+        const participantId = response.data.userId;
 
         console.log(`Participante adicionado com ID: ${participantId}`);
         return participantId;
