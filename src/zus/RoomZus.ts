@@ -5,16 +5,16 @@ import {UserInterface} from "../interfaces/UserInterface";
 
 type CurrentRoom = {
     room : RoomInterface,
-    changeRoom:(session:RoomInterface) => void,
+    setRoom: (roomId: string, roomData: RoomInterface) => void,
     addUser:(user:UserInterface) => void,
     setUserList:(userList:UserInterface[]) => void,
 }
 
 const useRoom = create<CurrentRoom>((set) => ({
 
-
     room:{
         roomName: "",
+        roomId: "",
         roomSystem: {
             id : 0,
             name: "",
@@ -28,9 +28,15 @@ const useRoom = create<CurrentRoom>((set) => ({
         set((state) => ({ room: { ...state.room, userList: [...state.room.userList, user] } }));
     },
 
-    changeRoom:(roomIncome : RoomInterface)=>{
-        set(state => ({room : roomIncome}))
+    setRoom: (roomId: string, roomData: RoomInterface) => {
+        set((state) => ({
+            room: {
+                ...roomData,
+                roomId,
+            },
+        }));
     },
+
 
     setUserList: (userList: UserInterface[]) => {
         set((state) => ({ room: { ...state.room, userList: userList } }));
