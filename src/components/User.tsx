@@ -38,12 +38,14 @@ const initialFormData : UserInterface = {
     userId : "",
     userName: "",
     spectator : false,
-    vote : ""
+    vote : "",
+    roomId : "",
 };
 const User = () => {
     const classes = useStyles();
     const [formData, updateFormData] = useState(initialFormData);
     const setUser = useUser(((state) => state.setUser));
+    const currentUser = useUser(((state) => state.user));
     const addUser = useRoom(((state) => state.addUser));
     const currentRoom = useRoom(((state) => state.room));
     const [checked, setChecked] = useState(false);
@@ -55,13 +57,11 @@ const User = () => {
     const handleChangeName = (e: any) => {
         updateFormData({
             ...formData,
-            [e.target.name]: e.target.value.trim(),
-            userId: "1",
+            [e.target.name]: e.target.value.trim()
         });
     };
 
     const handleSwitch = (e: any) => {
-        console.log(currentRoom)
         setChecked(e.target.checked)
         updateFormData({
             ...formData,
@@ -69,17 +69,24 @@ const User = () => {
         });
     };
 
-    async function addParticipant(username : string) {
-        formData.userId = await UserService.addParticipant(formData.userName);
+    async function addParticipant() {
+        try {
+            formData.roomId = currentRoom.roomId;
+            const userId = await UserService.addParticipant(formData.userName, currentRoom.roomId, formData.spectator);
+            setUser(formData, userId);
+            addUser(formData, userId)
+            console.log(currentUser)
+        }
+        catch (error){
+            console.log(error)
+        }
     }
 
     const handleSubmit = (e: any) => {
         console.log(formData)
         e.preventDefault();
         routeChange();
-        setUser(formData);
-        addParticipant(formData.userName)
-        addUser(formData)
+        addParticipant()
     };
 
     return (
