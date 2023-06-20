@@ -45,6 +45,7 @@ const User = () => {
     const [formData, updateFormData] = useState(initialFormData);
     const setUser = useUser(((state) => state.setUser));
     const addUser = useRoom(((state) => state.addUser));
+    const currentRoom = useRoom(((state) => state.room));
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
 
@@ -60,6 +61,7 @@ const User = () => {
     };
 
     const handleSwitch = (e: any) => {
+        console.log(currentRoom)
         setChecked(e.target.checked)
         updateFormData({
             ...formData,

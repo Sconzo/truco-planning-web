@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, makeStyles, MenuItem, TextField, Box, FormControl} from '@material-ui/core';
 import {useAppThemeContext} from "../contexts";
 import {Basic, Custom, Fibonacci, Systems} from "../utils/System";
 import {useNavigate} from "react-router-dom";
 import useRoom from "../zus/RoomZus";
 import {RoomInterface} from "../interfaces/RoomInterface";
+import {SessionService} from "../services/Sessions/sessionService"
 // @ts-ignore
 import coffee from "../images/coffee.png"
 
@@ -62,6 +63,7 @@ const possibleSystems = [
 
 const initialFormData : RoomInterface = {
     roomName: "",
+    roomId: "",
     roomSystem: {
         id : 0,
         name: "",
@@ -78,18 +80,24 @@ const CreateRoomForm = () => {
     const {toggleTheme} = useAppThemeContext()
 
 
-    const changeRoom = useRoom((state) => state.changeRoom);
-    const handleSubmit = (e: any) => {
+    const setRoom = useRoom((state) => state.setRoom);
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         console.log(formData)
-        changeRoom(formData);
-        routeChange();
+
+        try {
+            const sessionId = await SessionService.createSession(formData.roomName, formData.roomSystem.name);
+            setRoom(sessionId,formData);
+            routeChange();
+        } catch (error) {
+            console.error('Ocorreu um erro:', error);
+        }
     };
+
     let navigate = useNavigate();
     const routeChange = () => {
         navigate("/user");
     };
-
 
     const handleChangeName = (e: any) => {
         updateFormData({
