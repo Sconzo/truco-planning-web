@@ -64,7 +64,7 @@ const possibleSystems = [
 const initialFormData : RoomInterface = {
     roomName: "",
     roomId: "",
-    roomSystem: {
+    sessionSystem: {
         id : 0,
         name: "",
         values: [],
@@ -86,7 +86,7 @@ const CreateRoomForm = () => {
         console.log(formData)
 
         try {
-            const sessionId = await SessionService.createSession(formData.roomName, formData.roomSystem.name);
+            const sessionId = await SessionService.createSession(formData.roomName, formData.sessionSystem.id);
             setRoom(sessionId,formData);
             routeChange();
         } catch (error) {
@@ -135,7 +135,7 @@ const CreateRoomForm = () => {
                         helperText="Selecione o sistema de votação"
                         className={classes.margin_bottom_40}
                         onChange={handleChangeSystem}
-                        name="roomSystem"
+                        name="sessionSystem"
                     >
                         {possibleSystems.map((option) => (
                             <MenuItem key={option.value} value={option.value}>

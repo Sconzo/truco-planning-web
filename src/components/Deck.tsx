@@ -71,7 +71,7 @@ const Deck = (props: DeckProps) => {
         }
     };
 
-    let cards = props.room.roomSystem.values;
+    let cards = props.room.sessionSystem.values;
 
 
     useEffect(() => {
@@ -94,7 +94,7 @@ const Deck = (props: DeckProps) => {
                     </CardActionArea>
                 </Card>
             ))}
-            {props.room.roomSystem.coffee ?
+            {props.room.sessionSystem.coffee ?
                 <Card className={`${classes.oneCard} ${selectedCardIndex === -1 ? classes.selected : ''}`} key={-1}>
                     <CardActionArea onClick={() => selectCard(-1)}>
                         <CardContent>
