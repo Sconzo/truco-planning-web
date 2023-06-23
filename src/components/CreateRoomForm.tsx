@@ -81,12 +81,13 @@ const CreateRoomForm = () => {
 
 
     const setRoom = useRoom((state) => state.setRoom);
+    let sessionId = "";
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         console.log(formData)
 
         try {
-            const sessionId = await SessionService.createSession(formData.roomName, formData.sessionSystem.id);
+            sessionId = await SessionService.createSession(formData.roomName, formData.sessionSystem.id);
             setRoom(sessionId,formData);
             routeChange();
         } catch (error) {
@@ -96,7 +97,7 @@ const CreateRoomForm = () => {
 
     let navigate = useNavigate();
     const routeChange = () => {
-        navigate("/user");
+        navigate("/" + sessionId + "/user");
     };
 
     const handleChangeName = (e: any) => {

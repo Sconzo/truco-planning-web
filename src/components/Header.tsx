@@ -48,7 +48,7 @@ const Header = ({ userName, roomName }:HeaderProps) => {
     const room = useRoom(((state) => state.room));
     const user = useUser(((state) => state.user));
 
-    const linkToCopy = Environment.SERVER_URL + '/session/' + room.roomId;
+    const linkToCopy = Environment.CLIENT_URL + '/' + room.roomId + '/user';
 
     const handleOpen = (e:any) =>{
         setOpen(true);

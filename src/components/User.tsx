@@ -2,9 +2,8 @@ import {Box, FormControl} from "@mui/material";
 import {Button, FormControlLabel, makeStyles, Switch, TextField} from "@material-ui/core";
 import React, {useState} from "react";
 import {UserInterface} from "../interfaces/UserInterface";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import useUser from "../zus/UserZus";
-import {Environment} from "../utils/Environment";
 import useRoom from "../zus/RoomZus";
 import {UserService} from "../services/Users/userService";
 
@@ -48,6 +47,7 @@ const User = () => {
     const currentUser = useUser(((state) => state.user));
     const addUser = useRoom(((state) => state.addUser));
     const currentRoom = useRoom(((state) => state.room));
+    const setRoomId = useRoom(((state) => state.setRoomId));
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
 
@@ -61,6 +61,9 @@ const User = () => {
         });
     };
 
+    let { sessionId } = useParams();
+
+
     const handleSwitch = (e: any) => {
         setChecked(e.target.checked)
         updateFormData({
@@ -71,8 +74,12 @@ const User = () => {
 
     async function addParticipant() {
         try {
-            formData.roomId = currentRoom.roomId;
-            const userId = await UserService.addParticipant(formData.userName, currentRoom.roomId, formData.spectator);
+            if(sessionId===undefined){
+                sessionId = currentRoom.roomId;
+            }
+            formData.roomId = sessionId;
+            setRoomId(sessionId);
+            const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator);
             setUser(formData, userId);
             addUser(formData, userId)
             console.log(currentUser)
