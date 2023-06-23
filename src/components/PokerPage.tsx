@@ -65,7 +65,7 @@ const PokerPage = () => {
                     {<Header userName={user.userName} roomName={room.roomName}/>}
                 </Grid>
                 <List style={{position:"absolute"}}>
-                    {userList.map(((user : UserInterface) => (
+                    {room.userList.map(((user : UserInterface) => (
                             <ListItem key={user.userId}>
                                 <ListItemAvatar>
                                     {user.vote ? (
