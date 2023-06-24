@@ -50,30 +50,40 @@ const Deck = (props: DeckProps) => {
     const classes = useStyles();
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
-    const [userList, setUserList] = React.useState([]);
-
     const selectCard = (cardIndex: number) => {
+        const userMatch = props.room.userList.find(obj => obj.userId === props.user.userId)
         if (selectedCardIndex === cardIndex) {
             setSelectedCardIndex(null);
+            if(userMatch){
+                userMatch.vote = "";
+            }
         } else {
             setSelectedCardIndex(cardIndex);
-            if (cardIndex === -1) {
-            } else {
+
+            if(userMatch){
+                if (cardIndex === -1) {
+                    userMatch.vote = "-1";
+                } else {
+                    userMatch.vote =  cards[cardIndex];
+                }
             }
+
         }
     };
 
-    let cards = props.room.roomSystem.values;
+    let cards = props.room.sessionSystem.values;
+
+
+    useEffect(() => {
+        setSelectedCardIndex(null);
+    }, [props.clear]);
 
     if (props.user.spectator) {
         return null;
     }
-    useEffect(() => {
-        setSelectedCardIndex(null);
-    }, [props.clear]);
+
     return (
         <Box className={classes.root}>
-            <span>{userList}</span>
             {cards.map((card, index) => (
                 <Card className={`${classes.oneCard} ${selectedCardIndex === index ? classes.selected : ''}`}
                       key={index}>
@@ -84,7 +94,7 @@ const Deck = (props: DeckProps) => {
                     </CardActionArea>
                 </Card>
             ))}
-            {props.room.roomSystem.coffee ?
+            {props.room.sessionSystem.coffee ?
                 <Card className={`${classes.oneCard} ${selectedCardIndex === -1 ? classes.selected : ''}`} key={-1}>
                     <CardActionArea onClick={() => selectCard(-1)}>
                         <CardContent>

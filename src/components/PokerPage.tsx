@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Avatar, Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
 import Header from "./Header";
 import PokerTable from "./PokerTable";
@@ -9,6 +9,8 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PendingIcon from '@mui/icons-material/Pending';
 import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
+import {SessionService} from "../services/Sessions/sessionService";
+import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -50,10 +52,22 @@ const PokerPage = () => {
     const setUserListZus = useRoom((state) => state.setUserList);
     const user = useUser((state) => state.user);
     const [clear, setClear] = useState(false);
-
     const [userList, setUserList] = React.useState([]);
 
     const classes = useStyles();
+
+    const [session, setSession] = useState<RoomInterface>(roomObject);
+    async function getSessionData() {
+        try {
+            const sessionData = await SessionService.getSessionById(room.roomId);
+            setSession(sessionData);
+        } catch (error) {
+            console.error('Erro ao obter os dados da sessão:', error);
+        }
+    }
+    useEffect(() => {
+        getSessionData();
+    }, []);
 
     const clearSelection = () => {
         setClear(!clear);
@@ -62,10 +76,10 @@ const PokerPage = () => {
     return (
             <Grid  direction="column" className={classes.root}>
                 <Grid  className={classes.header}>
-                    {<Header userName={user.userName} roomName={room.roomName}/>}
+                    {<Header userName={user.userName} roomName={session.roomName}/>}
                 </Grid>
                 <List style={{position:"absolute"}}>
-                    {userList.map(((user : UserInterface) => (
+                    {session.userList.map(((user : UserInterface) => (
                             <ListItem key={user.userId}>
                                 <ListItemAvatar>
                                     {user.vote ? (
@@ -82,7 +96,7 @@ const PokerPage = () => {
                     {<PokerTable onClearSelection={()=>clearSelection()}/>}
                 </Grid>
                 <Grid  className={classes.pokerCards}>
-                    {<Deck room={room} user={user} clear={clear}/>}
+                    {<Deck room={session} user={user} clear={clear}/>}
                 </Grid>
             </Grid>
     );

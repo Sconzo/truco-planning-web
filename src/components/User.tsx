@@ -2,9 +2,8 @@ import {Box, FormControl} from "@mui/material";
 import {Button, FormControlLabel, makeStyles, Switch, TextField} from "@material-ui/core";
 import React, {useState} from "react";
 import {UserInterface} from "../interfaces/UserInterface";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import useUser from "../zus/UserZus";
-import {Environment} from "../utils/Environment";
 import useRoom from "../zus/RoomZus";
 import {UserService} from "../services/Users/userService";
 
@@ -38,14 +37,17 @@ const initialFormData : UserInterface = {
     userId : "",
     userName: "",
     spectator : false,
-    vote : ""
+    vote : "",
+    roomId : "",
 };
 const User = () => {
     const classes = useStyles();
     const [formData, updateFormData] = useState(initialFormData);
     const setUser = useUser(((state) => state.setUser));
+    const currentUser = useUser(((state) => state.user));
     const addUser = useRoom(((state) => state.addUser));
     const currentRoom = useRoom(((state) => state.room));
+    const setRoomId = useRoom(((state) => state.setRoomId));
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
 
@@ -55,13 +57,14 @@ const User = () => {
     const handleChangeName = (e: any) => {
         updateFormData({
             ...formData,
-            [e.target.name]: e.target.value.trim(),
-            userId: "1",
+            [e.target.name]: e.target.value.trim()
         });
     };
 
+    let { sessionId } = useParams();
+
+
     const handleSwitch = (e: any) => {
-        console.log(currentRoom)
         setChecked(e.target.checked)
         updateFormData({
             ...formData,
@@ -69,17 +72,28 @@ const User = () => {
         });
     };
 
-    async function addParticipant(username : string) {
-        formData.userId = await UserService.addParticipant(formData.userName);
+    async function addParticipant() {
+        try {
+            if(sessionId===undefined){
+                sessionId = currentRoom.roomId;
+            }
+            formData.roomId = sessionId;
+            setRoomId(sessionId);
+            const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator);
+            setUser(formData, userId);
+            addUser(formData, userId)
+            console.log(currentUser)
+        }
+        catch (error){
+            console.log(error)
+        }
     }
 
     const handleSubmit = (e: any) => {
         console.log(formData)
         e.preventDefault();
         routeChange();
-        setUser(formData);
-        addParticipant(formData.userName)
-        addUser(formData)
+        addParticipant()
     };
 
     return (

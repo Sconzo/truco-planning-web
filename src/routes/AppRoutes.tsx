@@ -8,7 +8,7 @@ export const AppRoutes = () => {
 
         <Routes>
             <Route path="/home" element ={<CreateRoomForm/>}/>
-            <Route path="/user" element ={<User/>}/>
+            <Route path="/:sessionId/user" element ={<User/>}/>
             <Route path="/poker" element ={<PokerPage/>}/>
             <Route path="*" element={<Navigate to="/home"/>}/>
         </Routes>
