@@ -6,6 +6,7 @@ import {UserInterface} from "../interfaces/UserInterface";
 type CurrentRoom = {
     room: RoomInterface,
     setRoom: (roomId: string, roomData: RoomInterface) => void,
+    setRoomId: (roomId: string) => void,
     addUser: (user: UserInterface, userId : string) => void,
     setUserList: (userList: UserInterface[]) => void,
 }
@@ -15,7 +16,7 @@ const useRoom = create<CurrentRoom>((set) => ({
     room: {
         roomName: "",
         roomId: "",
-        roomSystem: {
+        sessionSystem: {
             id: 0,
             name: "",
             values: [],
@@ -35,6 +36,14 @@ const useRoom = create<CurrentRoom>((set) => ({
         set((state) => ({
             room: {
                 ...roomData,
+                roomId,
+            },
+        }));
+    },
+    setRoomId:(roomId: string)=>{
+        set((state) => ({
+            room: {
+                ...state.room,
                 roomId,
             },
         }));
