@@ -21,7 +21,7 @@ async function getSessionById(sessionId: string): Promise<RoomInterface> {
     try {
         const response = await Api.get(`/session/${sessionId}`);
         const session = response.data;
-        debugger
+
         console.log(`Sessão encontrada: ${session}`);
         return session;
     } catch (error) {

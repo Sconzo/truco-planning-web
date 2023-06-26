@@ -4,7 +4,7 @@ import {UserInterface} from "../interfaces/UserInterface";
 
 type CurrentUser = {
     user : UserInterface,
-    setUser:(user:UserInterface, userId:string) => void,
+    setUser:(userId:string, user:UserInterface) => void,
 }
 
 const useUser = create<CurrentUser>((set) => ({
@@ -16,7 +16,7 @@ const useUser = create<CurrentUser>((set) => ({
         roomId:"",
     },
 
-    setUser:(userIncome : UserInterface, userId:string)=>{
+    setUser:(userId:string, userIncome : UserInterface)=>{
         set(state => ({
             user : {...userIncome, userId}
         }))
