@@ -6,6 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import useUser from "../zus/UserZus";
 import useRoom from "../zus/RoomZus";
 import {UserService} from "../services/Users/userService";
+import Pusher from "pusher-js";
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -80,9 +81,7 @@ const User = () => {
             formData.roomId = sessionId;
             setRoomId(sessionId);
             const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator);
-            setUser(formData, userId);
-            addUser(formData, userId)
-            console.log(currentUser)
+            setUser(userId,formData);
         }
         catch (error){
             console.log(error)
@@ -90,10 +89,9 @@ const User = () => {
     }
 
     const handleSubmit = (e: any) => {
-        console.log(formData)
         e.preventDefault();
-        routeChange();
         addParticipant()
+        routeChange();
     };
 
     return (

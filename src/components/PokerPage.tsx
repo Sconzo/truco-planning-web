@@ -11,6 +11,7 @@ import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
+import Pusher from "pusher-js";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -49,14 +50,18 @@ const useStyles = makeStyles((theme) => ({
 const PokerPage = () => {
 
     const room = useRoom((state) => state.room);
-    const setUserListZus = useRoom((state) => state.setUserList);
     const user = useUser((state) => state.user);
     const [clear, setClear] = useState(false);
-    const [userList, setUserList] = React.useState([]);
 
     const classes = useStyles();
 
     const [session, setSession] = useState<RoomInterface>(roomObject);
+    const setUserList = (userList: UserInterface[]) => {
+        setSession(prevSession => ({
+            ...prevSession,
+            userList: userList,
+        }));
+    };
     async function getSessionData() {
         try {
             const sessionData = await SessionService.getSessionById(room.roomId);
@@ -67,7 +72,35 @@ const PokerPage = () => {
     }
     useEffect(() => {
         getSessionData();
+        usePusher();
     }, []);
+
+    const usePusher = () =>{
+        const pusherKey = "5918ae5c8a1c68cce96d"
+        const pusherCluster = "sa1"
+
+        if (!pusherKey || !pusherCluster) {
+            console.error('As variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER devem estar definidas.');
+            throw new Error('Variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER não estão definidas.');
+
+        }
+
+        try{
+            const pusher = new Pusher(pusherKey, {
+                cluster: pusherCluster,
+                forceTLS: true,
+            });
+
+            const channel = pusher.subscribe('session_' + room.roomId);
+
+            channel.bind('user_created', (data: UserInterface[]) => {
+                setUserList(data)
+            });
+        }
+        catch (error){
+            throw error;
+        }
+    }
 
     const clearSelection = () => {
         setClear(!clear);

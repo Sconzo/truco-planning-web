@@ -79,10 +79,10 @@ const Header = ({ userName, roomName }:HeaderProps) => {
     return (
         <Grid container  className={classes.root}>
             <Grid item xs={4} className={classes.playerName}>
-                {<h3>{userName}</h3>}
+                {<h3>{}</h3>}
             </Grid>
             <Grid item xs={4} className={classes.roomName}>
-                {<h1>{roomName}</h1>}
+                {<h1>{room.roomName}</h1>}
             </Grid>
             <Grid item xs={4} className={classes.invite}>
                 <Button variant="contained" color="primary" onClick={($event) => handleOpen($event)}>INVITE</Button>
