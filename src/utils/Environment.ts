@@ -3,5 +3,5 @@ export const Environment = {
     SERVER_URL : "https://api-truco-planning.bohr.io/api",
 
     //CLIENT_URL : "http://localhost:5173",
-    CLIENT_URL : "https://truco-planning.bohr.io",
+    CLIENT_URL : "https://trucoplanning.bohr.io",
 }
