@@ -62,7 +62,7 @@ const PokerPage = () => {
             userList: userList,
         }));
     };
-    async function getSessionData() {
+    const getSessionData = async () => {
         try {
             const sessionData = await SessionService.getSessionById(room.roomId);
             setSession(sessionData);
