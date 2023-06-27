@@ -89,6 +89,7 @@ const CreateRoomForm = () => {
         try {
             sessionId = await SessionService.createSession(formData.roomName, formData.sessionSystem.id);
             setRoom(sessionId,formData);
+            localStorage.setItem('roomId', sessionId);
             routeChange();
         } catch (error) {
             console.error('Ocorreu um erro:', error);

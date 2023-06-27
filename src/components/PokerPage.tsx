@@ -62,10 +62,13 @@ const PokerPage = () => {
             userList: userList,
         }));
     };
+    const roomId = localStorage.getItem('roomId');
     const getSessionData = async () => {
         try {
-            const sessionData = await SessionService.getSessionById(room.roomId);
-            setSession(sessionData);
+            if(roomId){
+                const sessionData = await SessionService.getSessionById(roomId);
+                setSession(sessionData);
+            }
         } catch (error) {
             console.error('Erro ao obter os dados da sessão:', error);
         }
