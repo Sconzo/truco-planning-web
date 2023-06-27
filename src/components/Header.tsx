@@ -1,7 +1,6 @@
 import {Grid, makeStyles, Button, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
 import React, {useState} from "react";
 import useRoom from "../zus/RoomZus";
-import useUser from "../zus/UserZus";
 import {Environment} from "../utils/Environment"
 
 const useStyles = makeStyles((theme) => ({
@@ -14,15 +13,19 @@ const useStyles = makeStyles((theme) => ({
         color:"black",
         paddingLeft:"30px",
         display:"flex",
-        alignItems:"center"
+        alignItems:"center",
+        fontSize:'18px',
+        fontWeight:'bold',
     },
     roomName: {
-        color:"black",
+        color: "#353535",
         flexGrow: 1,
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        fontSize:'28px',
+        fontWeight:'bold',
     },
     invite: {
         color:"black",
@@ -46,24 +49,15 @@ const Header = ({ userName, roomName }:HeaderProps) => {
     const [copied, setCopied] = useState(false);
 
     const room = useRoom(((state) => state.room));
-    const user = useUser(((state) => state.user));
 
     const linkToCopy = Environment.CLIENT_URL + '/' + room.roomId + '/user';
 
     const handleOpen = (e:any) =>{
         setOpen(true);
-        console.log("User -> ")
-        console.log(user)
-        console.log("Room -> ")
-        console.log(room)
     }
 
     const handleClose = (e:any) =>{
         setOpen(false);
-        console.log("User -> ")
-        console.log(user)
-        console.log("Room -> ")
-        console.log(room)
     }
 
     const handleCopy = () => {
@@ -79,10 +73,10 @@ const Header = ({ userName, roomName }:HeaderProps) => {
     return (
         <Grid container  className={classes.root}>
             <Grid item xs={4} className={classes.playerName}>
-                {<h3>{}</h3>}
+                {<h3>{userName}</h3>}
             </Grid>
             <Grid item xs={4} className={classes.roomName}>
-                {<h1>{room.roomName}</h1>}
+                {<h1>{roomName}</h1>}
             </Grid>
             <Grid item xs={4} className={classes.invite}>
                 <Button variant="contained" color="primary" onClick={($event) => handleOpen($event)}>INVITE</Button>
