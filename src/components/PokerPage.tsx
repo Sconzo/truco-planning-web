@@ -12,6 +12,7 @@ import {UserInterface} from "../interfaces/UserInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
 import Pusher from "pusher-js";
+import pusher from "../shared/pusher/pusher";
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -79,20 +80,8 @@ const PokerPage = () => {
     }, []);
 
     const usePusher = () =>{
-        const pusherKey = "5918ae5c8a1c68cce96d"
-        const pusherCluster = "sa1"
-
-        if (!pusherKey || !pusherCluster) {
-            console.error('As variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER devem estar definidas.');
-            throw new Error('Variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER não estão definidas.');
-
-        }
 
         try{
-            const pusher = new Pusher(pusherKey, {
-                cluster: pusherCluster,
-                forceTLS: true,
-            });
 
             const channel = pusher.subscribe('session_' + room.roomId);
 
