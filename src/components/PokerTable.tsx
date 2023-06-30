@@ -6,6 +6,7 @@ import useUser from "../zus/UserZus";
 import useRoom from "../zus/RoomZus";
 import React, {useState} from "react";
 import {Environment} from "../utils/Environment";
+import {RoomInterface} from "../interfaces/RoomInterface";
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -58,19 +59,21 @@ const useStyles = makeStyles((theme) => ({
 
 type PokerTableProps = {
     onClearSelection: () => void
+    room: RoomInterface;
 }
 
-const PokerTable = ({onClearSelection}: PokerTableProps) => {
+const PokerTable = (props: PokerTableProps) => {
     const classes = useStyles();
-    const room = useRoom((state) => state.room);
+    //const room = useRoom((state) => state.room);
     const [mean, setMean] = useState(0);
+
 
 
     const cardsReveal = () => {
 
         let sum = 0;
         let count = 0;
-        room.userList.forEach(user => {
+        props.room.userList.forEach(user => {
             if (user.vote && user.vote !== 'coffee') {
                 sum = sum + parseInt(user.vote);
                 count = count + 1.0;
@@ -84,10 +87,10 @@ const PokerTable = ({onClearSelection}: PokerTableProps) => {
 
     const newRound = () => {
         setMean(0);
-        room.userList.forEach(user => {
+        props.room.userList.forEach(user => {
             user.vote = "";
         });
-        onClearSelection();
+        props.onClearSelection();
     }
 
     return (

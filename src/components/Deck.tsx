@@ -4,7 +4,7 @@ import {RoomInterface} from "../interfaces/RoomInterface";
 // @ts-ignore
 import coffee from "../images/coffee.png";
 import {UserInterface} from "../interfaces/UserInterface";
-import {Environment} from "../utils/Environment";
+import {UserService} from "../services/Users/userService";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,31 +43,37 @@ interface HeaderProps {
 interface DeckProps {
     room: RoomInterface;
     user: UserInterface
-    clear : boolean
+    clear: boolean
 }
 
 const Deck = (props: DeckProps) => {
     const classes = useStyles();
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
+    const userVoted = async (user: UserInterface) => {
+
+        await UserService.userVoted(user.roomId, user.userId, user.vote);
+    }
     const selectCard = (cardIndex: number) => {
         const userMatch = props.room.userList.find(obj => obj.userId === props.user.userId)
         if (selectedCardIndex === cardIndex) {
             setSelectedCardIndex(null);
-            if(userMatch){
+            if (userMatch) {
                 userMatch.vote = "";
             }
         } else {
             setSelectedCardIndex(cardIndex);
 
-            if(userMatch){
+            if (userMatch) {
                 if (cardIndex === -1) {
                     userMatch.vote = "-1";
                 } else {
-                    userMatch.vote =  cards[cardIndex];
+                    userMatch.vote = cards[cardIndex];
                 }
             }
-
+        }
+        if (userMatch) {
+            userVoted(userMatch);
         }
     };
 
