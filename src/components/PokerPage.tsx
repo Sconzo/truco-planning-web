@@ -118,7 +118,7 @@ const PokerPage = () => {
                     )))}
                 </List>
                 <Grid  className={classes.table}>
-                    {<PokerTable onClearSelection={()=>clearSelection()}/>}
+                    {<PokerTable room={session} onClearSelection={()=>clearSelection()}/>}
                 </Grid>
                 <Grid  className={classes.pokerCards}>
                     {<Deck room={session} user={user} clear={clear}/>}
