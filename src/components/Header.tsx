@@ -1,6 +1,5 @@
 import {Grid, makeStyles, Button, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
 import React, {useState} from "react";
-import useRoom from "../zus/RoomZus";
 import {Environment} from "../utils/Environment"
 
 const useStyles = makeStyles((theme) => ({
@@ -48,9 +47,9 @@ const Header = ({ userName, roomName }:HeaderProps) => {
 
     const [copied, setCopied] = useState(false);
 
-    const room = useRoom(((state) => state.room));
+    const roomId = localStorage.getItem('roomId');
 
-    const linkToCopy = Environment.CLIENT_URL + '/' + room.roomId + '/user';
+    const linkToCopy = Environment.CLIENT_URL + '/' + roomId + '/user';
 
     const handleOpen = (e:any) =>{
         setOpen(true);
