@@ -18,6 +18,22 @@ async function addParticipant(name : string, sessionId : string, spectator : boo
     }
 }
 
+async function removePlayer(userId : string, sessionId : string) {
+    try {
+        const response = await Api.post('/user/remove', {
+            userId,
+            sessionId,
+        });
+
+        const participantId = response.data.userId;
+
+        console.log(`Participante removido com ID: ${participantId}`);
+        return participantId;
+    } catch (error) {
+        console.error('Erro ao remover participante:', error);
+    }
+}
+
 async function userVoted( sessionId : string,userId : string, vote : string) {
     try {
         const response = await Api.post('/user/vote', {
@@ -37,6 +53,7 @@ async function userVoted( sessionId : string,userId : string, vote : string) {
 
 export const UserService = {
     addParticipant,
+    removePlayer,
     userVoted
 }
 
