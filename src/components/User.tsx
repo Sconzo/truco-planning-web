@@ -82,7 +82,6 @@ const User = () => {
             setRoomId(sessionId);
             const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator);
             setUser(userId,formData);
-            localStorage.setItem("userId", userId);
         }
         catch (error){
             console.log(error)
