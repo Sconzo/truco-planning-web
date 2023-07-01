@@ -13,8 +13,6 @@ import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
 import Pusher from "pusher-js";
 import pusher from "../shared/pusher/pusher";
-import {UserService} from "../services/Users/userService";
-
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingRight: "30px",
+        paddingRight:"30px",
     },
     pokerCards: {
         color: theme.palette.secondary.contrastText,
@@ -65,29 +63,13 @@ const PokerPage = () => {
             userList: userList,
         }));
     };
-
-    if (!localStorage.getItem('roomId')) {
-        localStorage.setItem('roomId', room.roomId);
-    }
     const roomId = localStorage.getItem('roomId');
     const getSessionData = async () => {
         try {
-            if (roomId) {
+            if(roomId){
                 const sessionData = await SessionService.getSessionById(roomId);
                 setSession(sessionData);
             }
-        } catch (error) {
-            console.error('Erro ao obter os dados da sessão:', error);
-        }
-    }
-
-    const removePlayer = async () => {
-        try {
-            const userId = localStorage.getItem('userId');
-            if(roomId && userId){
-                await UserService.removePlayer(userId, roomId);
-            }
-
         } catch (error) {
             console.error('Erro ao obter os dados da sessão:', error);
         }
@@ -97,25 +79,17 @@ const PokerPage = () => {
         usePusher();
     }, []);
 
-    const usePusher = () => {
+    const usePusher = () =>{
 
-        try {
+        try{
 
             const channel = pusher.subscribe('session_' + room.roomId);
 
             channel.bind('user_created', (data: UserInterface[]) => {
                 setUserList(data)
             });
-
-
-            window.addEventListener('beforeunload', (event) => {
-                // Lógica que você deseja executar antes de o usuário fechar a página
-
-                // Por exemplo, exibir uma mensagem de despedida
-                event.preventDefault();
-                removePlayer();
-            });
-        } catch (error) {
+        }
+        catch (error){
             throw error;
         }
     }
@@ -125,31 +99,31 @@ const PokerPage = () => {
     }
 
     return (
-        <Grid direction="column" className={classes.root}>
-            <Grid className={classes.header}>
-                {<Header userName={user.userName} roomName={session.roomName}/>}
+            <Grid  direction="column" className={classes.root}>
+                <Grid  className={classes.header}>
+                    {<Header userName={user.userName} roomName={session.roomName}/>}
+                </Grid>
+                <List style={{position:"absolute"}}>
+                    {session.userList.map(((user : UserInterface) => (
+                            <ListItem key={user.userId}>
+                                <ListItemAvatar>
+                                    {user.vote ? (
+                                        <CheckCircleOutlineIcon style={{ fill: "green" }} />
+                                    ) : (
+                                        <PendingIcon />
+                                    )}
+                                </ListItemAvatar>
+                                <ListItemText primary={user.userName} />
+                            </ListItem>
+                    )))}
+                </List>
+                <Grid  className={classes.table}>
+                    {<PokerTable room={session} onClearSelection={()=>clearSelection()}/>}
+                </Grid>
+                <Grid  className={classes.pokerCards}>
+                    {<Deck room={session} user={user} clear={clear}/>}
+                </Grid>
             </Grid>
-            <List style={{position: "absolute"}}>
-                {session.userList.map(((user: UserInterface) => (
-                    <ListItem key={user.userId}>
-                        <ListItemAvatar>
-                            {user.vote ? (
-                                <CheckCircleOutlineIcon style={{fill: "green"}}/>
-                            ) : (
-                                <PendingIcon/>
-                            )}
-                        </ListItemAvatar>
-                        <ListItemText primary={user.userName}/>
-                    </ListItem>
-                )))}
-            </List>
-            <Grid className={classes.table}>
-                {<PokerTable room={session} onClearSelection={() => clearSelection()}/>}
-            </Grid>
-            <Grid className={classes.pokerCards}>
-                {<Deck room={session} user={user} clear={clear}/>}
-            </Grid>
-        </Grid>
     );
 };
 
