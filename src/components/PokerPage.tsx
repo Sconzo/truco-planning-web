@@ -11,9 +11,10 @@ import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
-import Pusher from "pusher-js";
-import pusher from "../shared/pusher/pusher";
+//import pusher from "../shared/pusher/pusher";
 import {UserService} from "../services/Users/userService";
+import Pusher from "pusher-js";
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,7 +51,33 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const pusherKey = "5918ae5c8a1c68cce96d"
+const pusherCluster = "sa1"
+
+if (!pusherKey || !pusherCluster) {
+    console.error('As variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER devem estar definidas.');
+    throw new Error('Variáveis de ambiente REACT_APP_KEY e REACT_APP_CLUSTER não estão definidas.');
+
+}
+const userIdFront = uuidv4();
+localStorage.setItem("userIdFront",userIdFront);
+console.log("USER ID REAL -> " + localStorage.getItem("userIdFront"))
+
+const pusher = new Pusher(pusherKey, {
+    cluster: pusherCluster,
+    forceTLS: true,
+    authEndpoint:Environment.SERVER_URL + '/pusher/auth',
+    auth: {
+        params: {
+            id: userIdFront,
+        },
+    },
+});
+
+
 const PokerPage = () => {
+
+    console.log("TESTE DO TESTE -> ", localStorage.getItem("Teste"));
 
     const room = useRoom((state) => state.room);
     const user = useUser((state) => state.user);
@@ -81,44 +108,28 @@ const PokerPage = () => {
         }
     }
 
-    const removePlayer = async () => {
-        try {
-            const userId = localStorage.getItem('userId');
-            if(roomId && userId){
-                await UserService.removePlayer(userId, roomId);
-            }
 
-        } catch (error) {
-            console.error('Erro ao obter os dados da sessão:', error);
-        }
-    }
     useEffect(() => {
         getSessionData();
-        usePusher();
     }, []);
 
-    const usePusher = () => {
 
-        try {
+    const channel = pusher.subscribe('presence-session_' + room.roomId);
 
-            const channel = pusher.subscribe('session_' + room.roomId);
+    channel.bind('pusher:subscription_succeeded', (data : any) => {
+        console.log(data)
+    });
 
-            channel.bind('user_created', (data: UserInterface[]) => {
-                setUserList(data)
-            });
+    channel.bind('user_created', (data: UserInterface[]) => {
+        setUserList(data)
+    });
 
+    channel.bind("pusher:member_removed", (data : any) => {
 
-            window.addEventListener('beforeunload', (event) => {
-                // Lógica que você deseja executar antes de o usuário fechar a página
-
-                // Por exemplo, exibir uma mensagem de despedida
-                event.preventDefault();
-                removePlayer();
-            });
-        } catch (error) {
-            throw error;
-        }
-    }
+        console.log(data)
+        UserService.removePlayer(data.id, room.roomId);
+        console.log("User leave", data.id, data.info);
+    });
 
     const clearSelection = () => {
         setClear(!clear);

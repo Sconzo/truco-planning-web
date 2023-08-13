@@ -1,12 +1,13 @@
 
 import {Api} from '../axios-config'
 
-async function addParticipant(name : string, sessionId : string, spectator : boolean) {
+async function addParticipant(name : string, sessionId : string, spectator : boolean, userIdFront : string) {
     try {
         const response = await Api.post('/user', {
             name,
             sessionId,
             spectator,
+            userIdFront,
         });
 
         const participantId = response.data.userId;
