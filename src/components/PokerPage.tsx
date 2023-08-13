@@ -77,8 +77,6 @@ const pusher = new Pusher(pusherKey, {
 
 const PokerPage = () => {
 
-    console.log("TESTE DO TESTE -> ", localStorage.getItem("Teste"));
-
     const room = useRoom((state) => state.room);
     const user = useUser((state) => state.user);
     const [clear, setClear] = useState(false);
