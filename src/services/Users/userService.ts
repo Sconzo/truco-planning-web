@@ -1,12 +1,13 @@
 
 import {Api} from '../axios-config'
 
-async function addParticipant(name : string, sessionId : string, spectator : boolean) {
+async function addParticipant(name : string, sessionId : string, spectator : boolean, userIdFront : string) {
     try {
         const response = await Api.post('/user', {
             name,
             sessionId,
             spectator,
+            userIdFront,
         });
 
         const participantId = response.data.userId;
@@ -15,6 +16,22 @@ async function addParticipant(name : string, sessionId : string, spectator : boo
         return participantId;
     } catch (error) {
         console.error('Erro ao adicionar participante:', error);
+    }
+}
+
+async function removePlayer(userId : string, sessionId : string) {
+    try {
+        const response = await Api.post('/user/remove', {
+            userId,
+            sessionId,
+        });
+
+        const participantId = response.data.userId;
+
+        console.log(`Participante removido com ID: ${participantId}`);
+        return participantId;
+    } catch (error) {
+        console.error('Erro ao remover participante:', error);
     }
 }
 
@@ -37,6 +54,7 @@ async function userVoted( sessionId : string,userId : string, vote : string) {
 
 export const UserService = {
     addParticipant,
-    userVoted
+    userVoted,
+    removePlayer
 }
 

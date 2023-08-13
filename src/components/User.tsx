@@ -1,12 +1,12 @@
 import {Box, FormControl} from "@mui/material";
 import {Button, FormControlLabel, makeStyles, Switch, TextField} from "@material-ui/core";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {UserInterface} from "../interfaces/UserInterface";
 import {useNavigate, useParams} from "react-router-dom";
 import useUser from "../zus/UserZus";
 import useRoom from "../zus/RoomZus";
 import {UserService} from "../services/Users/userService";
-import Pusher from "pusher-js";
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -52,6 +52,7 @@ const User = () => {
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
 
+    const userIdFront = localStorage.getItem("userIdFront");
     const routeChange = () => {
         navigate("/poker");
     };
@@ -80,8 +81,17 @@ const User = () => {
             }
             formData.roomId = sessionId;
             setRoomId(sessionId);
-            const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator);
-            setUser(userId,formData);
+
+            if(userIdFront) {
+
+                const userId = await UserService.addParticipant(formData.userName, sessionId, formData.spectator, userIdFront);
+                setUser(userId, formData);
+                localStorage.setItem("userId", userId)
+                console.log("userId gerado no back -> ", userId);
+            }
+            else{
+                throw new Error("User Id null")
+            }
         }
         catch (error){
             console.log(error)
