@@ -50,6 +50,7 @@ const Deck = (props: DeckProps) => {
     const classes = useStyles();
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
+    const [flag, setFlag] = useState(false);
     const userVoted = async (user: UserInterface) => {
 
         await UserService.userVoted(user.roomId, user.userId, user.vote);
