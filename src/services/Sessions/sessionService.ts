@@ -30,7 +30,33 @@ async function getSessionById(sessionId: string): Promise<RoomInterface> {
     }
 }
 
+
+async function votesReveal( mean : number, sessionId : string) {
+    try {
+        const response = await Api.patch('/session/reveal', {
+            mean,
+            sessionId,
+        });
+        return response;
+    } catch (error) {
+        console.error('Erro ao revelar votos:', error);
+    }
+}
+
+async function newRound(sessionId : string) {
+    try {
+        const response = await Api.patch('/session/reset', {
+            sessionId,
+        });
+        return response;
+    } catch (error) {
+        console.error('Erro ao ao renovar rodada:', error);
+    }
+}
+
 export const SessionService = {
     createSession,
-    getSessionById
+    getSessionById,
+    votesReveal,
+    newRound
 }
