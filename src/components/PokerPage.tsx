@@ -15,6 +15,7 @@ import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
 import {UserService} from "../services/Users/userService";
 import Pusher from "pusher-js";
 import { v4 as uuidv4 } from 'uuid';
+import VotingResult from "./VotingResult";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -77,6 +78,10 @@ const pusher = new Pusher(pusherKey, {
 
 const PokerPage = () => {
 
+    const [someoneDidntVoteYet, setSomeoneDidntVoteYet] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
+    const [total, setTotal] = useState(0);
+
     const room = useRoom((state) => state.room);
     const user = useUser((state) => state.user);
     const [clear, setClear] = useState(false);
@@ -122,16 +127,47 @@ const PokerPage = () => {
         setUserList(data)
     });
 
-    channel.bind("pusher:member_removed", (data : any) => {
+    channel.bind('vote_reveal', (data: number) => {
+        setOpenModal(true)
+        setTotal(data)
+    });
 
+    channel.bind('reset', (data: UserInterface[]) => {
+        setUserList(data)
+    });
+
+
+    channel.bind("pusher:member_removed", (data : any) => {
         console.log(data)
         UserService.removePlayer(data.id, room.roomId);
         console.log("User leave", data.id, data.info);
     });
 
     const clearSelection = () => {
+        SessionService.newRound(room.roomId)
         setClear(!clear);
+        setOpenModal(false)
     }
+
+    const votesReveal = (total : number) => {
+        if(!someoneDidntVoteYet) {
+            setOpenModal(true)
+            setTotal(total)
+            console.log("Total -> ", total);
+            SessionService.votesReveal(total, room.roomId);
+        }
+    }
+
+
+    useEffect(() => {
+
+        setSomeoneDidntVoteYet(session.userList.some((user) => user.vote === ""))
+
+        if (session.userList.every((user) => user.vote === "")){
+            setOpenModal(false)
+            setClear(!clear);
+        }
+    },[session.userList])
 
     return (
         <Grid direction="column" className={classes.root}>
@@ -153,11 +189,21 @@ const PokerPage = () => {
                 )))}
             </List>
             <Grid className={classes.table}>
-                {<PokerTable room={session} onClearSelection={() => clearSelection()}/>}
+                {<PokerTable room={session}
+                             buttonDisabled={someoneDidntVoteYet}
+                             onVotesReveal={(total) => votesReveal(total)}
+                />}
             </Grid>
             <Grid className={classes.pokerCards}>
                 {<Deck room={session} user={user} clear={clear}/>}
             </Grid>
+
+            <VotingResult
+                openModal={openModal}
+                total={total}
+                onClearSelection={() => clearSelection()}
+            />
+
         </Grid>
     );
 };
