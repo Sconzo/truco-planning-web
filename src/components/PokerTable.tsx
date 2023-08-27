@@ -1,11 +1,8 @@
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import {Button} from "@material-ui/core";
-import useUser from "../zus/UserZus";
-import useRoom from "../zus/RoomZus";
 import React, {useState} from "react";
-import {Environment} from "../utils/Environment";
 import {RoomInterface} from "../interfaces/RoomInterface";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "#FFFFFF",
         borderRadius: theme.shape.borderRadius,
     },
-    button:{
+    button: {
         backgroundColor: theme.palette.secondary.main,
     },
     player1: {
@@ -47,26 +44,27 @@ const useStyles = makeStyles((theme) => ({
         bottom: "-2rem",
         left: "calc(50% - 1.5rem)",
     },
-    score:{
-        color:"black",
-        marginTop:"40px",
-        fontSize:"30px",
-        padding:"8px",
-        backgroundColor:theme.palette.primary.main,
+    score: {
+        color: "black",
+        marginTop: "40px",
+        fontSize: "30px",
+        padding: "8px",
+        backgroundColor: theme.palette.primary.main,
         borderRadius: '8px',
     }
 }));
 
 type PokerTableProps = {
-    onClearSelection: () => void
+    //onClearSelection: () => void;
+    onVotesReveal: (div: number) => void;
     room: RoomInterface;
+    buttonDisabled: boolean;
 }
 
 const PokerTable = (props: PokerTableProps) => {
     const classes = useStyles();
     //const room = useRoom((state) => state.room);
     const [mean, setMean] = useState(0);
-
 
 
     const cardsReveal = () => {
@@ -79,8 +77,9 @@ const PokerTable = (props: PokerTableProps) => {
                 count = count + 1.0;
             }
         });
-        if(count > 0){
-            let div = sum/count;
+        if (count > 0) {
+            let div = sum / count;
+            props.onVotesReveal(div);
             setMean(div);
         }
     }
@@ -90,27 +89,23 @@ const PokerTable = (props: PokerTableProps) => {
         props.room.userList.forEach(user => {
             user.vote = "";
         });
-        props.onClearSelection();
+        //props.onClearSelection();
     }
 
     return (
         <Grid container direction="column" alignItems="center">
 
             <Box className={classes.table}>
-                {mean == 0 ?
-                    <Button onClick={() => cardsReveal()} className={classes.button}>Revelar</Button> :
-                    <Button onClick={() => newRound()} className={classes.button}>Nova Rodada</Button>
-                }
-                <Box className={classes.player + " " + classes.player1} />
-                <Box className={classes.player + " " + classes.player2} />
-                <Box className={classes.player + " " + classes.player3} />
-                <Box className={classes.player + " " + classes.player4} />
+
+                <Button disabled={props.buttonDisabled} onClick={() => cardsReveal()}
+                        className={classes.button}>Revelar</Button>
+
+
+                <Box className={classes.player + " " + classes.player1}/>
+                <Box className={classes.player + " " + classes.player2}/>
+                <Box className={classes.player + " " + classes.player3}/>
+                <Box className={classes.player + " " + classes.player4}/>
             </Box>
-            {mean == 0 ? null :
-                <Box className={classes.score}>
-                    <span>{mean}</span>
-                </Box>
-            }
         </Grid>
     );
 };
