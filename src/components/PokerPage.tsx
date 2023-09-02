@@ -6,8 +6,8 @@ import Deck from "./Deck";
 import useRoom from "../zus/RoomZus";
 import useUser from "../zus/UserZus";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import PendingIcon from '@mui/icons-material/Pending';
-import {Environment} from "../utils/Environment";
+import BlockIcon from '@mui/icons-material/Block';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center'
     },
+    icon:{
+        minWidth:'35px'
+    }
 }));
 
 const pusherKey = "5918ae5c8a1c68cce96d"
@@ -161,7 +164,10 @@ const PokerPage = () => {
 
     useEffect(() => {
 
-        setSomeoneDidntVoteYet(session.userList.some((user) => user.vote === ""))
+        setSomeoneDidntVoteYet(
+            session.userList.filter(user => !user.spectator).length === 0 ||
+            session.userList.filter(user => !user.spectator).some((user) => user.vote === "")
+        )
 
         if (session.userList.every((user) => user.vote === "")){
             setOpenModal(false)
@@ -177,11 +183,12 @@ const PokerPage = () => {
             <List style={{position: "absolute"}}>
                 {session.userList.map(((user: UserInterface) => (
                     <ListItem key={user.userId}>
-                        <ListItemAvatar>
+                        <ListItemAvatar className={classes.icon}>
                             {user.vote ? (
                                 <CheckCircleOutlineIcon style={{fill: "green"}}/>
-                            ) : (
-                                <PendingIcon/>
+                            ) : (user.spectator ? (
+                                <BlockIcon/>) : (
+                                    <HourglassEmptyIcon/>)
                             )}
                         </ListItemAvatar>
                         <ListItemText primary={user.userName}/>
@@ -202,6 +209,7 @@ const PokerPage = () => {
                 openModal={openModal}
                 total={total}
                 onClearSelection={() => clearSelection()}
+                session={session}
             />
 
         </Grid>
