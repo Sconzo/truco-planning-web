@@ -92,6 +92,10 @@ const PokerPage = () => {
     const classes = useStyles();
 
     const [session, setSession] = useState<RoomInterface>(roomObject);
+
+    const [loading, setLoading] = useState(true);
+
+
     const setUserList = (userList: UserInterface[]) => {
         setSession(prevSession => ({
             ...prevSession,
@@ -108,6 +112,7 @@ const PokerPage = () => {
             if (roomId) {
                 const sessionData = await SessionService.getSessionById(roomId);
                 setSession(sessionData);
+                setLoading(false);
             }
         } catch (error) {
             console.error('Erro ao obter os dados da sessão:', error);
@@ -174,6 +179,10 @@ const PokerPage = () => {
             setClear(!clear);
         }
     },[session.userList])
+
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
 
     return (
         <Grid direction="column" className={classes.root}>
