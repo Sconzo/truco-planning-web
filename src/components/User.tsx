@@ -51,6 +51,7 @@ const User = () => {
     const setRoomId = useRoom(((state) => state.setRoomId));
     const [checked, setChecked] = useState(false);
     let navigate = useNavigate();
+    const [disableButton, setDisableButton] = useState(true)
 
     const userIdFront = localStorage.getItem("userIdFront");
     const routeChange = () => {
@@ -104,6 +105,15 @@ const User = () => {
         routeChange();
     };
 
+    useEffect(()=>{
+        if(formData.userName != ""){
+            setDisableButton(false)
+        }
+        else {
+            setDisableButton(true)
+        }
+    },[formData])
+
     return (
             <Box
                 display="flex"
@@ -130,7 +140,12 @@ const User = () => {
                         className={classes.textField}
                         onChange={handleSwitch}
                     />
-                    <Button variant="contained" color="primary" onClick={($event) => handleSubmit($event)}>Entrar</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={($event) => handleSubmit($event)}
+                        disabled={disableButton}
+                    >Entrar</Button>
 
                 </FormControl>
 
