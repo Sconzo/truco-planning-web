@@ -161,14 +161,12 @@ const PokerPage = () => {
         if(!someoneDidntVoteYet) {
             setOpenModal(true)
             setTotal(total)
-            console.log("Total -> ", total);
             SessionService.votesReveal(total, room.roomId);
         }
     }
 
 
     useEffect(() => {
-
         setSomeoneDidntVoteYet(
             session.userList.filter(user => !user.spectator).length === 0 ||
             session.userList.filter(user => !user.spectator).some((user) => user.vote === "")
@@ -205,13 +203,18 @@ const PokerPage = () => {
                 )))}
             </List>
             <Grid className={classes.table}>
-                {<PokerTable room={session}
-                             buttonDisabled={someoneDidntVoteYet}
-                             onVotesReveal={(total) => votesReveal(total)}
+                {<PokerTable
+                    room={session}
+                    buttonDisabled={someoneDidntVoteYet}
+                    onVotesReveal={(total) => votesReveal(total)}
                 />}
             </Grid>
             <Grid className={classes.pokerCards}>
-                {<Deck room={session} user={user} clear={clear}/>}
+                {<Deck
+                    room={session}
+                    user={user}
+                    clear={clear}
+                />}
             </Grid>
 
             <VotingResult

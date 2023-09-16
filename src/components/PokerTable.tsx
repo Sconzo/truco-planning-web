@@ -68,19 +68,31 @@ const PokerTable = (props: PokerTableProps) => {
 
 
     const cardsReveal = () => {
-
+        debugger
         let sum = 0;
         let count = 0;
+        let coffeeVotes = 0;
         props.room.userList.forEach(user => {
-            if (user.vote && user.vote !== 'coffee') {
-                sum = sum + parseInt(user.vote);
+            if (user.vote) {
                 count = count + 1.0;
+                if(user.vote == '-1') {
+                    coffeeVotes++;
+                }
+                else {
+                    sum = sum + parseInt(user.vote);
+                }
             }
         });
         if (count > 0) {
-            let div = sum / count;
-            props.onVotesReveal(div);
-            setMean(div);
+            if(count === coffeeVotes){
+                setMean(-1);
+                props.onVotesReveal(-1);
+            }
+            else {
+                let div = sum / (count - coffeeVotes);
+                props.onVotesReveal(div);
+                setMean(div);
+            }
         }
     }
 
@@ -97,8 +109,11 @@ const PokerTable = (props: PokerTableProps) => {
 
             <Box className={classes.table}>
 
-                <Button disabled={props.buttonDisabled} onClick={() => cardsReveal()}
-                        className={classes.button}>Revelar</Button>
+                <Button disabled={props.buttonDisabled}
+                        onClick={() => cardsReveal()}
+                        className={classes.button}>
+                        Revelar
+                </Button>
 
 
                 <Box className={classes.player + " " + classes.player1}/>

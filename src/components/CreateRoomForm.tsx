@@ -42,15 +42,7 @@ const possibleSystems = [
         value: Basic.id,
         label: (
             <>
-                Padrão (1, 2, 4, 8, 16, <img src={coffee} alt="Coffee" style={{ width: "20px", height: "20px", paddingBottom:"7px", paddingLeft:"3px" }}/>)
-            </>
-        ),
-    },
-    {
-        value: Fibonacci.id,
-        label: (
-            <>
-                Fibonacci (0, 1, 2, 3, 5, 8, 13, 21, 34, 55, <img src={coffee} alt="Coffee" style={{ width: "20px", height: "20px", paddingBottom:"7px", paddingLeft:"3px" }}/>)
+                Potência de 2 (1, 2, 4, 8, 16)
             </>
         ),
     },
@@ -74,9 +66,8 @@ const initialFormData : RoomInterface = {
 };
 
 const CreateRoomForm = () => {
-    const [roomName, setRoomName] = useState('');
-    const [votingSystem, setVotingSystem] = useState('');
     const [formData, updateFormData] = useState(initialFormData);
+    const [disableButton, setDisableButton] = useState(true)
     const {toggleTheme} = useAppThemeContext()
 
 
@@ -116,6 +107,15 @@ const CreateRoomForm = () => {
         });
     };
 
+    useEffect(()=>{
+        if(formData.roomName != "" && formData.sessionSystem.id != 0){
+            setDisableButton(false)
+        }
+        else {
+            setDisableButton(true)
+        }
+    },[formData])
+
     const classes = useStyles();
     return (
             <Box
@@ -145,7 +145,12 @@ const CreateRoomForm = () => {
                             </MenuItem>
                         ))}
                     </TextField>
-                    <Button variant="contained" color="primary" onClick={($event) => handleSubmit($event)}>Criar</Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={($event) => handleSubmit($event)}
+                        disabled = {disableButton}
+                    >Criar</Button>
 
                 </FormControl>
 

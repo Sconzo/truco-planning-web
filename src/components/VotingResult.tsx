@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Button,
@@ -11,8 +11,8 @@ import {
 import {makeStyles} from "@material-ui/core/styles";
 import {RoomInterface} from "../interfaces/RoomInterface";
 import {UserInterface} from "../interfaces/UserInterface";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import PendingIcon from "@mui/icons-material/Pending";
+// @ts-ignore
+import coffee from "../images/coffee.png";
 
 const useStyles = makeStyles((theme) => ({
     score:{
@@ -49,22 +49,42 @@ type VotingResultProps = {
 const VotingResult = (props : VotingResultProps) => {
     const classes = useStyles();
 
+    const [userList, setUserList] = useState<UserInterface[]>([]);
+
+    useEffect(() => {
+        if(!props.openModal){
+            setUserList(props.session.userList);
+        }
+    }, [props.session.userList])
+
     return (
         <div>
 
             <Grid item xs={4} >
                 <Dialog open={props.openModal}>
-                    <DialogTitle>Resultado da Rodada</DialogTitle>
+                    <DialogTitle>Média da Rodada</DialogTitle>
                     <DialogContent>
                         <Box className={classes.score}>
-                            <span>{props.total}</span>
+                            <span>{
+                                props.total !== -1
+                                    ?
+                                    props.total
+                                    :
+                                    <img src={coffee} alt="Coffee" style={{width: "30px", height: "30px"}}/>}
+                            </span>
                         </Box>
                     </DialogContent>
                     <List>
-                        {props.session.userList.filter(user => !user.spectator).map(((user: UserInterface) => (
+                        {userList.filter(user => !user.spectator).map(((user: UserInterface) => (
                             <ListItem key={user.userId}>
                                 <ListItemAvatar className={classes.icon}>
-                                    <span className={classes.oneCard}>{user.vote}</span>
+                                    <span className={classes.oneCard}>{
+                                        user.vote !== "-1"
+                                            ?
+                                            user.vote
+                                            :
+                                            <img src={coffee} alt="Coffee" style={{width: "14px", height: "14px"}}/>}
+                                    </span>
                                 </ListItemAvatar>
                                 <ListItemText primary={user.userName}/>
                             </ListItem>
