@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     Box,
     Button,
@@ -49,6 +49,14 @@ type VotingResultProps = {
 const VotingResult = (props : VotingResultProps) => {
     const classes = useStyles();
 
+    const [userList, setUserList] = useState<UserInterface[]>([]);
+
+    useEffect(() => {
+        if(!props.openModal){
+            setUserList(props.session.userList);
+        }
+    }, [props.session.userList])
+
     return (
         <div>
 
@@ -67,7 +75,7 @@ const VotingResult = (props : VotingResultProps) => {
                         </Box>
                     </DialogContent>
                     <List>
-                        {props.session.userList.filter(user => !user.spectator).map(((user: UserInterface) => (
+                        {userList.filter(user => !user.spectator).map(((user: UserInterface) => (
                             <ListItem key={user.userId}>
                                 <ListItemAvatar className={classes.icon}>
                                     <span className={classes.oneCard}>{
