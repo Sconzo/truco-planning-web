@@ -6,12 +6,11 @@ import Deck from "./Deck";
 import useRoom from "../zus/RoomZus";
 import useUser from "../zus/UserZus";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import BlockIcon from '@mui/icons-material/Block';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';import {Environment} from "../utils/Environment";
 import {UserInterface} from "../interfaces/UserInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {RoomInterface, roomObject} from "../interfaces/RoomInterface";
-//import pusher from "../shared/pusher/pusher";
 import {UserService} from "../services/Users/userService";
 import Pusher from "pusher-js";
 import { v4 as uuidv4 } from 'uuid';
@@ -194,7 +193,7 @@ const PokerPage = () => {
                             {user.vote ? (
                                 <CheckCircleOutlineIcon style={{fill: "green"}}/>
                             ) : (user.spectator ? (
-                                <BlockIcon/>) : (
+                                <VisibilityIcon/>) : (
                                     <HourglassEmptyIcon/>)
                             )}
                         </ListItemAvatar>
