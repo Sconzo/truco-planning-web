@@ -164,6 +164,13 @@ const PokerPage = () => {
         }
     }
 
+    function customComparator(a : UserInterface, b : UserInterface) {
+        if (a.spectator === b.spectator) {
+            return a.userName.localeCompare(b.userName);
+        }
+        return b.spectator ? -1 : 1;
+    }
+
 
     useEffect(() => {
         setSomeoneDidntVoteYet(
@@ -187,7 +194,7 @@ const PokerPage = () => {
                 {<Header userName={user.userName} roomName={session.roomName}/>}
             </Grid>
             <List style={{position: "absolute"}}>
-                {session.userList.map(((user: UserInterface) => (
+                {session.userList.sort(customComparator).map(((user: UserInterface) => (
                     <ListItem key={user.userId}>
                         <ListItemAvatar className={classes.icon}>
                             {user.vote ? (
