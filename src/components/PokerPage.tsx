@@ -53,15 +53,6 @@ const useStyles = makeStyles((theme) => ({
     },
     icon:{
         minWidth:'35px'
-    },
-    waiting:{
-        margin: 0,
-        height: "100vh",
-        width: "100%",
-        textAlign: 'center',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
     }
 }));
 
