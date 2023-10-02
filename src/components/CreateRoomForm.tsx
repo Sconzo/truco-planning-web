@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {Button, makeStyles, MenuItem, TextField, Box, FormControl} from '@material-ui/core';
 import {useAppThemeContext} from "../contexts";
-import {Basic, Custom, Fibonacci, Systems} from "../utils/System";
 import {useNavigate} from "react-router-dom";
 import useRoom from "../zus/RoomZus";
 import {RoomInterface} from "../interfaces/RoomInterface";
 import {SessionService} from "../services/Sessions/sessionService"
 // @ts-ignore
 import coffee from "../images/coffee.png"
+import {SystemInterface} from "../interfaces/SystemInterface";
+import CreateCustomDeck from "./CreateCustomDeck";
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -36,22 +37,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }));
-
-const possibleSystems = [
-    {
-        value: Basic.id,
-        label: (
-            <>
-                Potência de 2 (1, 2, 4, 8, 16)
-            </>
-        ),
-    },
-    {
-        value: Custom.id,
-        label: "Criar novo sistema"
-    }
-
-];
+interface deckInterface {
+    id:number,
+    label:string
+}
+const possibleSystems : deckInterface[] = [];
 
 const initialFormData : RoomInterface = {
     roomName: "",
@@ -59,23 +49,39 @@ const initialFormData : RoomInterface = {
     sessionSystem: {
         id : 0,
         name: "",
-        values: [],
-        coffee: false
+        intValues: []
     },
     userList:[],
 };
 
+const deckList : SystemInterface[] = await SessionService.listAllDecks();
+deckList.forEach(deck => {
+    possibleSystems.push({
+        id : deck.id,
+        label : deck.name + " (" + deck.intValues.join() + ")"
+    })
+});
+possibleSystems.push({
+    id : -1,
+    label : "Usar deck personalizado"
+})
+
 const CreateRoomForm = () => {
     const [formData, updateFormData] = useState(initialFormData);
+    const [openModal, updateOpenModal] = useState(false);
+    const [systemChosen, setSystemChosen] = useState<null | number>(null);
     const [disableButton, setDisableButton] = useState(true)
     const {toggleTheme} = useAppThemeContext()
 
 
     const setRoom = useRoom((state) => state.setRoom);
     let sessionId = "";
+
+    const onCloseModal = () => {
+        updateOpenModal(false)
+    }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-        console.log(formData)
 
         try {
             sessionId = await SessionService.createSession(formData.roomName, formData.sessionSystem.id);
@@ -100,11 +106,18 @@ const CreateRoomForm = () => {
     };
 
     const handleChangeSystem = (e: any) => {
-        const system = Systems.filter(sys => sys.id == e.target.value)
-        updateFormData({
-            ...formData,
-            [e.target.name]: system[0],
-        });
+        setSystemChosen(e.target.value)
+        const system = deckList.find(sys => sys.id == e.target.value)
+
+        if(system){
+            updateFormData({
+                ...formData,
+                [e.target.name]: system,
+            });
+        }
+        else{
+            updateOpenModal(true)
+        }
     };
 
     useEffect(()=>{
@@ -133,14 +146,15 @@ const CreateRoomForm = () => {
                     />
                     <TextField
                         select
-                        label="Select"
+                        label="Deck"
                         helperText="Selecione o sistema de votação"
                         className={classes.margin_bottom_40}
                         onChange={handleChangeSystem}
                         name="sessionSystem"
+                        value={systemChosen}
                     >
-                        {possibleSystems.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
+                        {possibleSystems.sort((a,b) => a.id - b.id).map((option) => (
+                            <MenuItem key={option.id} value={option.id}>
                                 {option.label}
                             </MenuItem>
                         ))}
@@ -154,6 +168,11 @@ const CreateRoomForm = () => {
 
                 </FormControl>
 
+                <CreateCustomDeck
+                    openModal={openModal}
+                    onCloseModal={() => onCloseModal()}
+                    formData={formData}
+                ></CreateCustomDeck>
             </Box>
     );
 };

@@ -1,5 +1,8 @@
 import {Api} from '../axios-config'
 import {RoomInterface} from "../../interfaces/RoomInterface";
+import {SystemInterface} from "../../interfaces/SystemInterface";
+import {CustomSystemResponse} from "../../dtos/CustomSystemResponse";
+import {CustomSystemRequest} from "../../dtos/CustomSystemRequest";
 
 async function createSession(name: string, votingSystemId: number) {
     try {
@@ -54,9 +57,50 @@ async function newRound(sessionId : string) {
     }
 }
 
+async function listAllDecks() : Promise<SystemInterface[]>{
+    try {
+        const response = await Api.get('/deck/list');
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao listar decks:', error);
+        return Promise.reject("Erro ao listar decks");
+    }
+}
+
+// async function createDeck(deck : SystemInterface) : Promise<SystemInterface>{
+//     try {
+//         const response = await Api.post('/deck', {
+//             name : deck.name,
+//             values : deck.intValues
+//         });
+//         return response.data;
+//     } catch (error) {
+//         console.error('Erro ao listar decks:', error);
+//         return Promise.reject("Erro ao listar decks");
+//     }
+// }
+
+async function createSessionCustomDeck(customSystemRequest: CustomSystemRequest) : Promise<CustomSystemResponse> {
+    try {
+        const response = await Api.post('/session/custom-deck', {
+            customSystemRequest
+        });
+        const systemResponseInterface : CustomSystemResponse = response.data;
+
+        console.log(`Sessão criada com ID: ${systemResponseInterface.sessionId}`);
+        return systemResponseInterface;
+    } catch (error) {
+        console.error('Erro ao criar sessão:', error);
+        return Promise.reject("Erro ao criar deck");
+    }
+}
+
 export const SessionService = {
     createSession,
     getSessionById,
     votesReveal,
-    newRound
+    newRound,
+    listAllDecks,
+    //createDeck
+    createSessionCustomDeck
 }

@@ -19,7 +19,7 @@ const useRoom = create<CurrentRoom>((set) => ({
         sessionSystem: {
             id: 0,
             name: "",
-            values: [],
+            intValues: [],
             coffee: false
         },
         userList: []
