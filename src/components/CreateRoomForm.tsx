@@ -9,6 +9,7 @@ import {SessionService} from "../services/Sessions/sessionService"
 import coffee from "../images/coffee.png"
 import {SystemInterface} from "../interfaces/SystemInterface";
 import CreateCustomDeck from "./CreateCustomDeck";
+import {System, Systems} from "../utils/System";
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -54,7 +55,10 @@ const initialFormData : RoomInterface = {
     userList:[],
 };
 
-const deckList : SystemInterface[] = await SessionService.listAllDecks();
+const deckList : SystemInterface[] = []; //= await SessionService.listAllDecks();
+
+deckList.push(System.BASIC);
+deckList.push(System.FIBONACCI);
 deckList.forEach(deck => {
     possibleSystems.push({
         id : deck.id,
