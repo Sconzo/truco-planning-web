@@ -68,7 +68,7 @@ const Deck = (props: DeckProps) => {
                 if (cardIndex === -1) {
                     userMatch.vote = "-1";
                 } else {
-                    userMatch.vote = cards[cardIndex];
+                    userMatch.vote = cards[cardIndex].toString();
                 }
             }
         }
@@ -77,8 +77,7 @@ const Deck = (props: DeckProps) => {
         }
     };
 
-    let cards = props.room.sessionSystem.values;
-
+    let cards = props.room.sessionSystem.intValues.sort((a,b)=> a-b);
 
     useEffect(() => {
         setSelectedCardIndex(null);
@@ -100,14 +99,13 @@ const Deck = (props: DeckProps) => {
                     </CardActionArea>
                 </Card>
             ))}
-            {props.room.sessionSystem.coffee ?
                 <Card className={`${classes.oneCard} ${selectedCardIndex === -1 ? classes.selected : ''}`} key={-1}>
                     <CardActionArea onClick={() => selectCard(-1)}>
                         <CardContent>
                             {<img src={coffee} alt="Coffee" style={{width: "14px", height: "14px"}}/>}
                         </CardContent>
                     </CardActionArea>
-                </Card> : null}
+                </Card>
         </Box>
     );
 };

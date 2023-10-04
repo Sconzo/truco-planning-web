@@ -14,8 +14,7 @@ export const roomObject : RoomInterface = {
     sessionSystem: {
         id : 0,
         name: "",
-        values: [],
-        coffee: false
+        intValues: []
     },
     userList:[],
 };
