@@ -1,42 +1,30 @@
+import {SystemInterface} from "../interfaces/SystemInterface";
+
 export const System = {
     BASIC: {
         id : 1,
-        name: "BASIC",
-        values: [1, 2, 4, 8, 16],
-        coffee: true
+        name: "Potência de 2",
+        intValues: [1, 2, 4, 8, 16]
     },
     FIBONACCI: {
         id : 2,
         name: "FIBONACCI",
-        values: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55],
-        coffee: true
-    },
-    CUSTOM: {
-        name: "CUSTOM",
-    },
-}
-export const Basic = {
-        id : 1,
-        name: "BASIC",
-        values: [1, 2, 4, 8, 16],
-        coffee: true
+        intValues: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55]
     }
+}
+export const Basic : SystemInterface = {
+    id : 1,
+    name: "Potência de 2",
+    intValues: [1, 2, 4, 8, 16]
+}
 
-export const Fibonacci = {
+export const Fibonacci : SystemInterface = {
     id : 2,
     name: "FIBONACCI",
-    values: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55],
-    coffee: true
+    intValues: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55],
 }
 
-export const Custom = {
-    id : -1,
-    name: "CUSTOM",
-    values: [],
-    coffee: false
-}
-export const Systems = [
+export const Systems : SystemInterface[] = [
     Basic,
-    Fibonacci,
-    Custom
+    Fibonacci
 ]
