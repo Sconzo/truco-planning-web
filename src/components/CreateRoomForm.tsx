@@ -74,6 +74,7 @@ const CreateRoomForm = () => {
     const [formData, updateFormData] = useState(initialFormData);
     const [openModal, updateOpenModal] = useState(false);
     const [systemChosen, setSystemChosen] = useState<null | number>(null);
+    const [roomName, setRoomName] = useState<string>('');
     const [disableButton, setDisableButton] = useState(true)
     const {toggleTheme} = useAppThemeContext()
 
@@ -83,6 +84,7 @@ const CreateRoomForm = () => {
 
     const onCloseModal = () => {
         updateOpenModal(false)
+        setSystemChosen(null)
     }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -107,6 +109,7 @@ const CreateRoomForm = () => {
             ...formData,
             [e.target.name]: e.target.value.trim(),
         });
+        setRoomName(e.target.value.trim());
     };
 
     const handleChangeSystem = (e: any) => {
@@ -121,6 +124,7 @@ const CreateRoomForm = () => {
         }
         else{
             updateOpenModal(true)
+            console.log(roomName)
         }
     };
 
@@ -147,6 +151,7 @@ const CreateRoomForm = () => {
                         className={classes.textField}
                         onChange={handleChangeName}
                         name="roomName"
+                        value={roomName}
                     />
                     <TextField
                         select
@@ -176,6 +181,7 @@ const CreateRoomForm = () => {
                     openModal={openModal}
                     onCloseModal={() => onCloseModal()}
                     formData={formData}
+                    roomName={roomName}
                 ></CreateCustomDeck>
             </Box>
     );
