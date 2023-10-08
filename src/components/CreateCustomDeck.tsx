@@ -53,9 +53,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type CreateCustomDeckProps = {
-    openModal : boolean
+    openModal: boolean
     onCloseModal: () => void;
-    formData : RoomInterface;
+    formData: RoomInterface;
+    roomName: string;
 }
 const CreateCustomDeck = (props: CreateCustomDeckProps) => {
 
@@ -70,9 +71,11 @@ const CreateCustomDeck = (props: CreateCustomDeckProps) => {
     const [disableAddButton, setDisableAddButton] = useState(true)
     const [disableSaveButton, setDisableSaveButton] = useState(true)
 
-
+    useEffect(() => {
+        setSessionName(props.roomName)
+    }, [props.openModal])
     const addValueToDeck = () => {
-        if(!deckList.includes(cardValue)){
+        if (!deckList.includes(cardValue)) {
             const updatedDeck = [...deckList, cardValue];
             updatedDeck.sort((a, b) => a - b);
             updateDeckList(updatedDeck);
@@ -80,14 +83,14 @@ const CreateCustomDeck = (props: CreateCustomDeckProps) => {
         setInputValue('')
     }
 
-    let customSystemResponse : CustomSystemResponse;
+    let customSystemResponse: CustomSystemResponse;
     const handleSaveButton = async () => {
         props.onCloseModal();
-        const deckObject : CustomSystemRequest = {
-            sessionName : sessionName,
-            votingSystemRequest : {
-                name : deckName,
-                values : [...deckList],
+        const deckObject: CustomSystemRequest = {
+            sessionName: sessionName,
+            votingSystemRequest: {
+                name: deckName,
+                values: [...deckList],
             }
         }
 
@@ -110,13 +113,13 @@ const CreateCustomDeck = (props: CreateCustomDeckProps) => {
 
     const removeCard = (index: number) => {
         const temp = [...deckList]
-        temp.splice(index,1)
+        temp.splice(index, 1)
         updateDeckList(temp)
     }
 
     const updateCardValue = (e: any) => {
         const numberValue = parseInt(e.target.value, 10);
-        if(numberValue > 0 || e.target.value == '') {
+        if (numberValue > 0 || e.target.value == '') {
             setInputValue(e.target.value);
             setCardValue(numberValue)
         }
@@ -130,19 +133,17 @@ const CreateCustomDeck = (props: CreateCustomDeckProps) => {
     }
 
     useEffect(() => {
-        if(inputValue){
+        if (inputValue) {
             setDisableAddButton(false)
-        }
-        else{
+        } else {
             setDisableAddButton(true)
         }
-    },[inputValue])
+    }, [inputValue])
 
     useEffect(() => {
-        if(deckList.length >= 3 && deckName){
+        if (deckList.length >= 3 && deckName) {
             setDisableSaveButton(false)
-        }
-        else{
+        } else {
             setDisableSaveButton(true)
         }
     }, [deckList, deckName])

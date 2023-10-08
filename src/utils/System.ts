@@ -8,7 +8,7 @@ export const System = {
     },
     FIBONACCI: {
         id : 2,
-        name: "FIBONACCI",
+        name: "Fibonacci",
         intValues: [0, 1, 2, 3, 5, 8, 13, 21, 34, 55]
     }
 }
