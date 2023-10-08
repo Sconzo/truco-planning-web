@@ -57,6 +57,15 @@ const User = () => {
     const routeChange = () => {
         navigate("/poker");
     };
+
+    const url = window.location.pathname;
+    const regex = /\/([0-9a-f-]+)\/user/;
+    const match = url.match(regex);
+
+    if (match) {
+        const trecho = match[1]; // O trecho desejado estará em match[1]
+        localStorage.setItem('roomId', trecho)
+    }
     const handleChangeName = (e: any) => {
         updateFormData({
             ...formData,
