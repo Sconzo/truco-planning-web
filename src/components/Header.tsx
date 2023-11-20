@@ -78,9 +78,9 @@ const Header = ({ userName, roomName }:HeaderProps) => {
                 {<h1>{roomName}</h1>}
             </Grid>
             <Grid item xs={4} className={classes.invite}>
-                <Button variant="contained" color="primary" onClick={($event) => handleOpen($event)}>INVITE</Button>
+                <Button variant="contained" color="primary" onClick={($event) => handleOpen($event)}>CONVIDAR</Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Link to access this room</DialogTitle>
+                    <DialogTitle>Link para acessar esta sala</DialogTitle>
                     <DialogContent>
                         <p>
                             <br />
@@ -93,7 +93,7 @@ const Header = ({ userName, roomName }:HeaderProps) => {
                         </Button>
                         {copied}
                         <Button onClick={handleClose} color="primary">
-                            Close
+                            Fechar
                         </Button>
                     </DialogActions>
                 </Dialog>
