@@ -1,7 +1,7 @@
 export const Environment = {
-    //SERVER_URL : "http://localhost:3000",
-    SERVER_URL : "https://api-truco-planning.bohr.io/api",
+    SERVER_URL : import.meta.env.VITE_APP_SERVER_URL,
+    //SERVER_URL : "https://api-truco-planning.bohr.io/api",
 
-    //CLIENT_URL : "http://localhost:5173",
-    CLIENT_URL : "https://trucoplanning.bohr.io",
+    CLIENT_URL : import.meta.env.VITE_APP_CLIENT_URL,
+    //CLIENT_URL : "https://trucoplanning.bohr.io",
 }
