@@ -68,7 +68,6 @@ const PokerTable = (props: PokerTableProps) => {
 
 
     const cardsReveal = () => {
-        debugger
         let sum = 0;
         let count = 0;
         let coffeeVotes = 0;
