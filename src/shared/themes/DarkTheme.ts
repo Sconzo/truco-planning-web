@@ -1,23 +1,27 @@
 import { createTheme } from "@mui/material/styles";
-import {cyan, yellow} from "@mui/material/colors";
+import {deepPurple, grey, yellow, blueGrey, indigo} from "@mui/material/colors";
 
 export const DarkTheme = createTheme({
     palette: {
         primary: {
-            main: yellow[700],
-            dark: yellow[800],
-            light: yellow[500],
+            main: deepPurple[200],
+            dark: deepPurple[300],
+            light: deepPurple[100],
             contrastText: "#ffffff"
         },
         secondary: {
-            main: cyan[500],
-            dark: cyan[400],
-            light: cyan[300],
+            main: indigo[400],
+            dark: indigo[400],
+            light: indigo[400],
             contrastText: "#ffffff"
         },
         background:{
-            paper: "#303134",
-            default: "#202124"
+            paper: grey[900],
+            default: grey[900]
+        },
+        action:{
+            disabledBackground: grey[500],
+            hover:yellow[800]
         }
     }
 });

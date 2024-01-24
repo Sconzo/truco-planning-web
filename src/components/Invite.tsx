@@ -27,20 +27,23 @@ const useStyles = makeStyles((theme) => ({
         fontWeight:'bold',
     },
     invite: {
-        color:"black",
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingRight:"30px",
+        marginLeft:10,
+        marginBottom:40,
+
     },
+    button:{
+        color: theme.palette.secondary.contrastText
+    }
 }));
 interface HeaderProps {
-    userName: string;
     roomName: string;
 }
 
-const Header = ({ userName, roomName }:HeaderProps) => {
+const Invite = () => {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
@@ -70,15 +73,8 @@ const Header = ({ userName, roomName }:HeaderProps) => {
     };
 
     return (
-        <Grid container  className={classes.root}>
-            <Grid item xs={4} className={classes.playerName}>
-                {<h3>{userName}</h3>}
-            </Grid>
-            <Grid item xs={4} className={classes.roomName}>
-                {<h1>{roomName}</h1>}
-            </Grid>
-            <Grid item xs={4} className={classes.invite}>
-                <Button variant="contained" color="primary" onClick={($event) => handleOpen($event)}>CONVIDAR</Button>
+            <Grid item xs={1} className={classes.invite}>
+                <Button className={classes.button} variant="contained" color="primary" onClick={($event) => handleOpen($event)}>CONVIDAR</Button>
                 <Dialog open={open} onClose={handleClose}>
                     <DialogTitle>Link para acessar esta sala</DialogTitle>
                     <DialogContent>
@@ -98,8 +94,7 @@ const Header = ({ userName, roomName }:HeaderProps) => {
                     </DialogActions>
                 </Dialog>
             </Grid>
-        </Grid>
 );
 };
 
-export default Header;
+export default Invite;

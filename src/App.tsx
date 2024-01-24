@@ -12,9 +12,6 @@ const App: React.FC = () => {
         <AppThemeProvider>
             <BrowserRouter>
                 <AppRoutes/>
-                <div>
-                    {/*<Hello name="SPFC" />*/}
-                </div>
             </BrowserRouter>
         </AppThemeProvider>
     );

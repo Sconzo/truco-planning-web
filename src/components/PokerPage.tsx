@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
-import Header from "./Header";
+import {Button, Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
+import Invite from "./Invite";
 import PokerTable from "./PokerTable";
 import Deck from "./Deck";
 import useRoom from "../zus/RoomZus";
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         margin: 0,
-        height: "100vh",
+        height: "100%",
+        paddingTop: 50
     },
     header: {
         backgroundColor: theme.palette.background.default,
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
     icon:{
         minWidth:'35px'
-    }
+    },
 }));
 
 const pusherKey = "5918ae5c8a1c68cce96d"
@@ -185,9 +186,10 @@ const PokerPage = () => {
 
     return (
         <Grid direction="column" className={classes.root}>
-            <Grid className={classes.header}>
-                {<Header userName={user.userName} roomName={session.roomName}/>}
-            </Grid>
+            {/*<Grid className={classes.header}>*/}
+            {/*    {<Header userName={user.userName} roomName={session.roomName}/>}*/}
+            {/*</Grid>*/}
+            <Invite/>
             <List style={{position: "absolute"}}>
                 {session.userList.map(((user: UserInterface) => (
                     <ListItem key={user.userId}>

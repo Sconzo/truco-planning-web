@@ -17,7 +17,11 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 0,
         marginTop: 0,
         fontWeight: 500,
-        border: "white"
+        border: "white",
+        '& .MuiInputBase-input': {
+            color: theme.palette.primary.contrastText
+        },
+        color: theme.palette.primary.contrastText
     },
     input: {
         color: 'white'
@@ -31,7 +35,12 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        height:'100%',
+        paddingTop:100
     },
+    button: {
+        color: theme.palette.secondary.contrastText,
+    }
 }));
 
 const initialFormData : UserInterface = {
@@ -124,12 +133,7 @@ const User = () => {
     },[formData])
 
     return (
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                minHeight="100vh"
-            >
+            <Box className={classes.root}>
 
                 <FormControl >
                     <TextField
@@ -141,9 +145,10 @@ const User = () => {
                         name="userName"
                     />
                     <FormControlLabel
+                        color={'white'}
                         value="end"
                         control={<Switch checked={checked} onChange={handleSwitch}
-                                         color="secondary" />}
+                                         color="primary" />}
                         label="Espectador"
                         labelPlacement="end"
                         className={classes.textField}
@@ -152,6 +157,7 @@ const User = () => {
                     <Button
                         variant="contained"
                         color="primary"
+                        className={classes.button}
                         onClick={($event) => handleSubmit($event)}
                         disabled={disableButton}
                     >Entrar</Button>
