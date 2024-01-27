@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
-import Header from "./Header";
+import {Button, Grid, List, ListItem, ListItemAvatar, ListItemText, makeStyles} from '@material-ui/core';
+import Invite from "./Invite";
 import PokerTable from "./PokerTable";
 import Deck from "./Deck";
 import useRoom from "../zus/RoomZus";
@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         margin: 0,
-        height: "100vh",
+        height: "100%",
+        paddingTop: 50
     },
     header: {
         backgroundColor: theme.palette.background.default,
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
     pokerCards: {
         color: theme.palette.secondary.contrastText,
+        paddingTop:100,
         height: "20%",
         flexGrow: 1,
         width: "100%",
@@ -53,6 +55,12 @@ const useStyles = makeStyles((theme) => ({
     },
     icon:{
         minWidth:'35px'
+    },
+    userName:{
+        color: theme.palette.secondary.contrastText
+    },
+    symbol:{
+        fill: 'red'
     }
 }));
 
@@ -162,7 +170,7 @@ const PokerPage = () => {
         if(!someoneDidntVoteYet) {
             setOpenModal(true)
             setTotal(total)
-            SessionService.votesReveal(total, room.roomId);
+            SessionService.votesReveal(total.toFixed(1), room.roomId);
         }
     }
 
@@ -185,21 +193,19 @@ const PokerPage = () => {
 
     return (
         <Grid direction="column" className={classes.root}>
-            <Grid className={classes.header}>
-                {<Header userName={user.userName} roomName={session.roomName}/>}
-            </Grid>
+            <Invite/>
             <List style={{position: "absolute"}}>
                 {session.userList.map(((user: UserInterface) => (
                     <ListItem key={user.userId}>
                         <ListItemAvatar className={classes.icon}>
                             {user.vote ? (
-                                <CheckCircleOutlineIcon style={{fill: "green"}}/>
+                                <CheckCircleOutlineIcon style={{ color: 'green' }}/>
                             ) : (user.spectator ? (
                                 <VisibilityIcon/>) : (
-                                    <HourglassEmptyIcon/>)
+                                    <HourglassEmptyIcon className={classes.userName} />)
                             )}
                         </ListItemAvatar>
-                        <ListItemText primary={user.userName}/>
+                        <ListItemText className={classes.userName} primary={user.userName}/>
                     </ListItem>
                 )))}
             </List>

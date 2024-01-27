@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, makeStyles, MenuItem, TextField, Box, FormControl} from '@material-ui/core';
+import {Box, Button, FormControl, makeStyles, MenuItem, TextField} from '@material-ui/core';
 import {useAppThemeContext} from "../contexts";
 import {useNavigate} from "react-router-dom";
 import useRoom from "../zus/RoomZus";
@@ -9,7 +9,7 @@ import {SessionService} from "../services/Sessions/sessionService"
 import coffee from "../images/coffee.png"
 import {SystemInterface} from "../interfaces/SystemInterface";
 import CreateCustomDeck from "./CreateCustomDeck";
-import {System, Systems} from "../utils/System";
+import {System} from "../utils/System";
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -20,12 +20,33 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 0,
         marginTop: 0,
         fontWeight: 500,
-        border: "white"
+        border: "white",
+        '& .MuiInputBase-input': {
+            color: theme.palette.primary.contrastText
+        },
+        '& .MuiInputLabel-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
     },
-    input: {
-        color: 'white'
+    margin_bottom_40: {
+        marginBottom: 40,
+        backgroundColor: theme.palette.background.default,
+        '& .MuiInputBase-input': {
+            color: theme.palette.primary.contrastText
+        },
+        '& .MuiInputLabel-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
+        '& .MuiFormHelperText-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
     },
-    margin_bottom_40: {marginBottom: 40},
+    dropdown: {
+        color: theme.palette.primary.contrastText,
+    },
     selectedOption: {
         width: "20px",
         height: "20px",
@@ -34,8 +55,20 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height:'100vh',
+        height:'100%',
+        paddingTop:100
     },
+    button: {
+        color: theme.palette.common.white,
+        backgroundColor: theme.palette.primary.main,
+        variant:"contained",
+        "&:disabled": {
+            backgroundColor: theme.palette.action.disabledBackground,
+        },
+        "&:hover": {
+            backgroundColor: theme.palette.action.hover,
+        },
+    }
 
 }));
 interface deckInterface {
@@ -155,22 +188,27 @@ const CreateRoomForm = () => {
                     />
                     <TextField
                         select
+                        variant="filled"
                         label="Deck"
                         helperText="Selecione o sistema de votação"
                         className={classes.margin_bottom_40}
                         onChange={handleChangeSystem}
                         name="sessionSystem"
                         value={systemChosen}
+                        SelectProps={{
+                            inputProps: {
+                                className: classes.dropdown,
+                            },
+                        }}
                     >
                         {possibleSystems.sort((a,b) => a.id - b.id).map((option) => (
-                            <MenuItem key={option.id} value={option.id}>
+                            <MenuItem key={option.id} value={option.id} className={classes.dropdown}>
                                 {option.label}
                             </MenuItem>
                         ))}
                     </TextField>
                     <Button
-                        variant="contained"
-                        color="primary"
+                        className={classes.button}
                         onClick={($event) => handleSubmit($event)}
                         disabled = {disableButton}
                     >Criar</Button>

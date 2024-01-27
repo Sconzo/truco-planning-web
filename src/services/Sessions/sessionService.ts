@@ -34,7 +34,7 @@ async function getSessionById(sessionId: string): Promise<RoomInterface> {
 }
 
 
-async function votesReveal( mean : number, sessionId : string) {
+async function votesReveal(mean: string, sessionId: string) {
     try {
         const response = await Api.patch('/session/reveal', {
             mean,
