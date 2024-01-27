@@ -6,7 +6,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import useUser from "../zus/UserZus";
 import useRoom from "../zus/RoomZus";
 import {UserService} from "../services/Users/userService";
-import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
     textField: {
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop:100
     },
     button: {
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.common.white,
     }
 }));
 

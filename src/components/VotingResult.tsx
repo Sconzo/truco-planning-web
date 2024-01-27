@@ -20,16 +20,16 @@ const useStyles = makeStyles((theme) => ({
         textAlign:"center",
         fontSize:"30px",
         padding:"8px",
-        backgroundColor:theme.palette.primary.main,
+        backgroundColor:theme.palette.primary.light,
         borderRadius: '8px',
     },
     oneCard: {
-        color: 'black',
+        color: theme.palette.primary.contrastText,
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.light,
         borderRadius: '4px',
         width: "21px",
         height: "26px",
@@ -37,6 +37,12 @@ const useStyles = makeStyles((theme) => ({
     },
     icon:{
         minWidth:'35px'
+    },
+    player:{
+        color:theme.palette.primary.contrastText
+    },
+    title:{
+        color:theme.palette.primary.contrastText
     }
 }));
 
@@ -62,7 +68,7 @@ const VotingResult = (props : VotingResultProps) => {
 
             <Grid item xs={4} >
                 <Dialog open={props.openModal}>
-                    <DialogTitle>Média da Rodada</DialogTitle>
+                    <DialogTitle className={classes.title}>Média da Rodada</DialogTitle>
                     <DialogContent>
                         <Box className={classes.score}>
                             <span>{
@@ -86,7 +92,7 @@ const VotingResult = (props : VotingResultProps) => {
                                             <img src={coffee} alt="Coffee" style={{width: "14px", height: "14px"}}/>}
                                     </span>
                                 </ListItemAvatar>
-                                <ListItemText primary={user.userName}/>
+                                <ListItemText className={classes.player} primary={user.userName}/>
                             </ListItem>
                         )))}
                     </List>

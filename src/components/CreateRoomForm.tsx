@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputBase-input': {
             color: theme.palette.primary.contrastText
         },
+        '& .MuiInputLabel-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
     },
     margin_bottom_40: {
         marginBottom: 40,
@@ -31,10 +35,17 @@ const useStyles = makeStyles((theme) => ({
         '& .MuiInputBase-input': {
             color: theme.palette.primary.contrastText
         },
+        '& .MuiInputLabel-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
+        '& .MuiFormHelperText-root': {
+            color: theme.palette.primary.contrastText,
+            opacity: 0.6,
+        },
     },
     dropdown: {
-            color: theme.palette.primary.contrastText
-
+        color: theme.palette.primary.contrastText,
     },
     selectedOption: {
         width: "20px",
@@ -48,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
         paddingTop:100
     },
     button: {
-        color: theme.palette.secondary.contrastText,
+        color: theme.palette.common.white,
         backgroundColor: theme.palette.primary.main,
         variant:"contained",
         "&:disabled": {

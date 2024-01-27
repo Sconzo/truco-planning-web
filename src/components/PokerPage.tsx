@@ -44,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     },
     pokerCards: {
         color: theme.palette.secondary.contrastText,
+        paddingTop:100,
         height: "20%",
         flexGrow: 1,
         width: "100%",
@@ -55,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
     icon:{
         minWidth:'35px'
     },
+    userName:{
+        color: theme.palette.secondary.contrastText
+    },
+    symbol:{
+        fill: 'red'
+    }
 }));
 
 const pusherKey = "5918ae5c8a1c68cce96d"
@@ -186,22 +193,19 @@ const PokerPage = () => {
 
     return (
         <Grid direction="column" className={classes.root}>
-            {/*<Grid className={classes.header}>*/}
-            {/*    {<Header userName={user.userName} roomName={session.roomName}/>}*/}
-            {/*</Grid>*/}
             <Invite/>
             <List style={{position: "absolute"}}>
                 {session.userList.map(((user: UserInterface) => (
                     <ListItem key={user.userId}>
                         <ListItemAvatar className={classes.icon}>
                             {user.vote ? (
-                                <CheckCircleOutlineIcon style={{fill: "green"}}/>
+                                <CheckCircleOutlineIcon style={{ color: 'green' }}/>
                             ) : (user.spectator ? (
                                 <VisibilityIcon/>) : (
-                                    <HourglassEmptyIcon/>)
+                                    <HourglassEmptyIcon className={classes.userName} />)
                             )}
                         </ListItemAvatar>
-                        <ListItemText primary={user.userName}/>
+                        <ListItemText className={classes.userName} primary={user.userName}/>
                     </ListItem>
                 )))}
             </List>

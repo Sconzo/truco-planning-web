@@ -1,4 +1,4 @@
-import {Grid, makeStyles, Button, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
+import {Grid, makeStyles, Button, Dialog, DialogTitle, DialogContent, DialogActions, Box} from '@material-ui/core';
 import React, {useState} from "react";
 import {Environment} from "../utils/Environment"
 
@@ -32,11 +32,21 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft:10,
-        marginBottom:40,
-
+        marginBottom:40
     },
     button:{
-        color: theme.palette.secondary.contrastText
+        color: theme.palette.common.white,
+        "&:disabled": {
+            color: theme.palette.common.white,
+        },
+    },
+    textValues:{
+        color: theme.palette.primary.contrastText
+    },
+    modal:{
+        borderStyle:'solid',
+        borderColor:theme.palette.primary.main,
+        borderWidth:2
     }
 }));
 interface HeaderProps {
@@ -75,9 +85,11 @@ const Invite = () => {
     return (
             <Grid item xs={1} className={classes.invite}>
                 <Button className={classes.button} variant="contained" color="primary" onClick={($event) => handleOpen($event)}>CONVIDAR</Button>
-                <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>Link para acessar esta sala</DialogTitle>
-                    <DialogContent>
+                <Dialog open={open} onClose={handleClose} >
+                    <Box className={classes.modal}>
+
+                    <DialogTitle className={classes.textValues}>Link para acessar esta sala</DialogTitle>
+                    <DialogContent className={classes.textValues}>
                         <p>
                             <br />
                             {linkToCopy}
@@ -92,6 +104,7 @@ const Invite = () => {
                             Fechar
                         </Button>
                     </DialogActions>
+                    </Box>
                 </Dialog>
             </Grid>
 );

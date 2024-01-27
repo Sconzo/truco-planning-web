@@ -7,7 +7,7 @@ import {RoomInterface} from "../interfaces/RoomInterface";
 
 const useStyles = makeStyles((theme) => ({
     table: {
-        backgroundColor: theme.palette.secondary.light,
+        backgroundColor: theme.palette.secondary.dark,
         borderRadius: theme.shape.borderRadius,
         height: "20vh",
         width: "40vw",
@@ -26,7 +26,12 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: theme.shape.borderRadius,
     },
     button: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.light,
+        color: theme.palette.primary.contrastText,
+        "&:disabled": {
+            color: theme.palette.primary.contrastText,
+            opacity:0.3
+        },
     },
     player1: {
         top: "calc(50% - 1.5rem)",

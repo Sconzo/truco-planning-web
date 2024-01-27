@@ -96,6 +96,7 @@ const Layout = () => {
 
                 <div className={classes.themeToggle} >
                     <Switch
+                        color="primary"
                         checked={checked}
                         className={classes.button}
                         onChange={handleChange}
