@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign:"center",
         fontSize:"30px",
         padding:"8px",
-        backgroundColor:theme.palette.primary.light,
+        backgroundColor:theme.palette.primary.main,
         borderRadius: '8px',
     },
     oneCard: {

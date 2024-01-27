@@ -170,7 +170,7 @@ const PokerPage = () => {
         if(!someoneDidntVoteYet) {
             setOpenModal(true)
             setTotal(total)
-            SessionService.votesReveal(total, room.roomId);
+            SessionService.votesReveal(total.toFixed(1), room.roomId);
         }
     }
 
