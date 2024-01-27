@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         margin: "5px"
     },
     selected: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.light,
         transition: 'background-color 0.3s ease-in-out'
     },
 }));

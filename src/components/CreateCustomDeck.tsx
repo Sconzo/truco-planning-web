@@ -1,18 +1,23 @@
 import {
     Box,
-    Button, Card, CardActionArea, CardContent,
-    Dialog, DialogActions,
+    Button,
+    Card,
+    CardActionArea,
+    CardContent,
+    Dialog,
+    DialogActions,
     DialogContent,
-    DialogTitle, FormControl,
-    Grid, makeStyles, TextField,
+    DialogTitle,
+    FormControl,
+    Grid,
+    makeStyles,
+    TextField,
 } from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import {RoomInterface} from "../interfaces/RoomInterface";
-import {SystemInterface} from "../interfaces/SystemInterface";
 import {SessionService} from "../services/Sessions/sessionService";
 import {CustomSystemResponse} from "../dtos/CustomSystemResponse";
 import {useNavigate} from "react-router-dom";
-import useRoom from "../zus/RoomZus";
 import {CustomSystemRequest} from "../dtos/CustomSystemRequest";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,14 +29,21 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 0,
         marginTop: 0,
         fontWeight: 500,
-        border: "white"
+        border: "white",
+        '& .MuiInputBase-input': {
+            color: theme.palette.primary.contrastText
+        },
+        '& .MuiInputLabel-root': {
+            opacity: 0.6,
+            color: theme.palette.primary.contrastText,
+        },
     },
-    input: {
-        color: 'white'
+    title: {
+        color: theme.palette.primary.dark
     },
     oneCard: {
         color: 'black',
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.secondary.light,
         textAlign: 'center',
         display: 'flex',
         alignItems: 'center',
@@ -50,6 +62,25 @@ const useStyles = makeStyles((theme) => ({
     cardContent: {
         display: "flex", alignItems: "center", justifyContent: "center"
     },
+    modal: {
+        borderStyle: 'solid',
+        borderColor: theme.palette.primary.main,
+        borderWidth: 2,
+        backgroundColor: theme.palette.background.default
+    },
+    button:{
+        color:theme.palette.primary.contrastText,
+        "&:disabled": {
+            color:theme.palette.primary.contrastText,
+            opacity:0.3,
+        },
+    },
+    createButton:{
+        "&:disabled": {
+            color:theme.palette.primary.main,
+            opacity:0.4,
+        },
+    }
 }));
 
 type CreateCustomDeckProps = {
@@ -152,82 +183,87 @@ const CreateCustomDeck = (props: CreateCustomDeckProps) => {
         <div>
 
             <Grid item xs={4}>
+
                 <Dialog open={props.openModal}>
-                    <DialogTitle>Jogue com um deck personalizado</DialogTitle>
-                    <DialogContent>
-                        <FormControl>
-                            <TextField
-                                id="outlined-basic"
-                                label="Nome da Sala"
-                                onChange={updateSessionName}
-                                variant="filled"
-                                className={classes.textField}
-                                name="sessionName"
-                                value={sessionName}
-                            />
+                    <Box className={classes.modal}>
+                        <DialogTitle className={classes.title}>Jogue com um deck personalizado</DialogTitle>
+                        <DialogContent>
+                            <FormControl>
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Nome da Sala"
+                                    onChange={updateSessionName}
+                                    variant="filled"
+                                    className={classes.textField}
+                                    name="sessionName"
+                                    value={sessionName}
+                                />
 
-                            <TextField
-                                id="outlined-basic"
-                                label="Nome do Deck"
-                                onChange={updateDeckName}
-                                variant="filled"
-                                className={classes.textField}
-                                name="deckName"
-                            />
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Nome do Deck"
+                                    onChange={updateDeckName}
+                                    variant="filled"
+                                    className={classes.textField}
+                                    name="deckName"
+                                />
 
-                            <TextField
-                                label="Valor"
-                                type={"number"}
-                                value={inputValue}
-                                onChange={updateCardValue}
-                                onKeyPress={(event) => {
-                                    if (!/[0-9]/.test(event.key)) {
-                                        event.preventDefault();
-                                    }
-                                }}
-                            />
+                                <TextField
+                                    label="Valor"
+                                    type={"number"}
+                                    value={inputValue}
+                                    className={classes.textField}
+                                    onChange={updateCardValue}
+                                    onKeyPress={(event) => {
+                                        if (!/[0-9]/.test(event.key)) {
+                                            event.preventDefault();
+                                        }
+                                    }}
+                                />
+                                <Button
+                                    className={classes.button}
+                                    onClick={addValueToDeck}
+                                    disabled={disableAddButton}
+                                >
+                                    Adicionar
+                                </Button>
+
+
+                            </FormControl>
+
+                            <div className={classes.cardContainer}>
+                                {deckList.map((card, index) => (
+
+                                    <Card className={`${classes.oneCard}`} key={index}>
+                                        <CardActionArea onClick={() => removeCard(index)}>
+                                            <CardContent className={classes.cardContent}>
+                                                {card}
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                ))}
+                            </div>
+
+
+                        </DialogContent>
+                        <DialogActions>
                             <Button
                                 color="primary"
-                                onClick={addValueToDeck}
-                                disabled={disableAddButton}
+                                onClick={handleCancelButton}
                             >
-                                Adicionar
+                                Cancelar
                             </Button>
 
-
-                        </FormControl>
-
-                        <div className={classes.cardContainer}>
-                            {deckList.map((card, index) => (
-
-                                <Card className={`${classes.oneCard}`} key={index}>
-                                    <CardActionArea onClick={() => removeCard(index)}>
-                                        <CardContent className={classes.cardContent}>
-                                            {card}
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            ))}
-                        </div>
-
-
-                    </DialogContent>
-                    <DialogActions>
-                        <Button
-                            color="primary"
-                            onClick={handleCancelButton}
-                        >
-                            Cancelar
-                        </Button>
-
-                        <Button
-                            color="primary"
-                            disabled={disableSaveButton}
-                            onClick={handleSaveButton}
-                        >
-                            Criar
-                        </Button>
-                    </DialogActions>
+                            <Button
+                                className={classes.createButton}
+                                color="primary"
+                                disabled={disableSaveButton}
+                                onClick={handleSaveButton}
+                            >
+                                Criar
+                            </Button>
+                        </DialogActions>
+                    </Box>
                 </Dialog>
             </Grid>
         </div>
